@@ -12,7 +12,7 @@ let rows=[],selected=null,offset=0,total=0,busy=false;
 const say=t=>{$('#notice').textContent=t;};
 const esc=t=>String(t??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const when=t=>new Date(Number(t)*1000).toLocaleString();
-const safeLink=(u,text)=>/^https:\/\//.test(u)?`<a href="${esc(u)}" target="_blank" rel="noopener">${esc(text)}</a>`:'';
+const safeLink=(u,text)=>(/^(https:\/\/|\/)/.test(u))?`<a href="${esc(u)}" target="_blank" rel="noopener">${esc(text)}</a>`:'';
 const money=w=>formatEther(BigInt(w));
 function accountLabel(){ $('#account').textContent=account?`${account.address.slice(0,6)}…${account.address.slice(-4)} · Fund test account`:'Create test account'; }
 accountLabel();
@@ -26,10 +26,10 @@ $('#account').onclick=async()=>{
 async function refresh(){
  if(!deployment.contract){$('#networkStatus').textContent='Deployment pending';$('#bounties').innerHTML='<p>No contract is configured yet.</p>';return;}
  try{
- total=Number(await client.readContract({address:deployment.contract,functionName:'get_count',transactionHashVariant:TransactionHashVariant.FINALIZED}));
- const data=await client.readContract({address:deployment.contract,functionName:'list_bounties',args:[offset,10],transactionHashVariant:TransactionHashVariant.FINALIZED});
+ total=Number(await client.readContract({address:deployment.contract,functionName:'get_count',transactionHashVariant:TransactionHashVariant.LATEST_FINAL}));
+ const data=await client.readContract({address:deployment.contract,functionName:'list_bounties',args:[offset,10],transactionHashVariant:TransactionHashVariant.LATEST_FINAL});
  rows=JSON.parse(data); $('#networkStatus').textContent='Finalized state connected';$('#count').textContent=total+' bounties';$('#page').textContent=`${offset+1}–${Math.min(offset+10,total)} of ${total}`;$('#prev').disabled=offset===0;$('#next').disabled=offset+10>=total;
- if(selected){selected=rows.find(x=>x.id===selected.id)??JSON.parse(await client.readContract({address:deployment.contract,functionName:'get_bounty',args:[selected.id],transactionHashVariant:TransactionHashVariant.FINALIZED}));detail();}
+ if(selected){selected=rows.find(x=>x.id===selected.id)??JSON.parse(await client.readContract({address:deployment.contract,functionName:'get_bounty',args:[selected.id],transactionHashVariant:TransactionHashVariant.LATEST_FINAL}));detail();}
  board();
  }catch(e){$('#networkStatus').textContent='Read unavailable';say('Could not load finalized state: '+e.message);$('#bounties').innerHTML='<p>Finalized state is unavailable. Use Refresh to retry.</p>';}
 }
@@ -61,13 +61,15 @@ async function execute(name,args,value){
  busy=true;document.querySelectorAll('button').forEach(b=>b.disabled=true);
  try{say('Submitting '+name+' to GenLayer…');const tx=await client.writeContract({address:deployment.contract,functionName:name,args,value,leaderOnly:false});say('Transaction submitted: '+tx+'. Waiting for finalized consensus…');
  const receipt=await client.waitForTransactionReceipt({hash:tx,status:TransactionStatus.FINALIZED,interval:4000,retries:90});
- if(receipt.result==='FAILURE'||receipt.result===1||receipt.consensus_data?.leader_receipt?.execution_result==='ERROR')throw Error('Transaction reverted; inspect '+tx+' in Studio.');
+ const consensus=receipt.result_name??receipt.resultName;
+ const leader=receipt.consensus_data?.leader_receipt?.[0];
+ if((consensus && !['MAJORITY_AGREE','SUCCESS'].includes(consensus)) || (leader?.execution_result && leader.execution_result!=='SUCCESS'))throw Error('Transaction failed; inspect '+tx+' in Studio.');
  say('Finalized transaction: '+tx);await refresh();
  }catch(e){say('Transaction did not complete: '+e.message);}finally{busy=false;document.querySelectorAll('button').forEach(b=>b.disabled=false);}
 }
 $('#refresh').onclick=refresh;$('#filter').onchange=board;$('#prev').onclick=()=>{offset=Math.max(0,offset-10);refresh();};$('#next').onclick=()=>{offset+=10;refresh();};
 $('#contract').textContent=deployment.contract?'Studionet contract '+deployment.contract:'Awaiting deployment';
-$('#proofLinks').innerHTML=(deployment.contract?safeLink('https://studio.genlayer.com/contracts/'+deployment.contract,'Open deployed contract in Studio'):'')+safeLink('https://github.com/haris4587/AccessPatch/blob/main/docs/live-test.json','Transaction records & live test')+safeLink('/fixtures/before.html','Synthetic original page')+safeLink('/fixtures/after.html','Synthetic repaired page');
+$('#proofLinks').innerHTML=(deployment.contract?safeLink('https://studio.genlayer.com/?import-contract='+deployment.contract,'Open deployed contract in Studio'):'')+safeLink('https://github.com/haris4587/AccessPatch/blob/main/docs/live-test.json','Transaction records & live test')+safeLink('/fixtures/before.html','Synthetic original page')+safeLink('/fixtures/after.html','Synthetic repaired page');
 // Source-level WebMCP read tool. Transactions remain explicit user actions.
 if(navigator.modelContext?.registerTool)navigator.modelContext.registerTool({name:'accesspatch_list_bounties',description:'Read finalized AccessPatch bounties from Studionet.',inputSchema:{type:'object',properties:{}},execute:async()=>({content:[{type:'text',text:JSON.stringify(rows)}]})});
 await refresh();

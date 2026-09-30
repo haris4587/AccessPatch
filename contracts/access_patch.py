@@ -133,6 +133,8 @@ class AccessPatch(gl.Contract):
         self._check(not c['challenge_used'] and str(gl.message.sender_address) != c['fixer'], 'One challenge, from someone other than the fixer')
         self._url(evidence_url)
         self._check(len(evidence_hash) == 64 and all(x in '0123456789abcdef' for x in evidence_hash), 'Invalid evidence digest')
+        evidence = gl.eq_principle.strict_eq(lambda: self._fetch(evidence_url))
+        self._check(evidence['ok'] and evidence['hash'] == evidence_hash, 'Challenge evidence must be available and match its digest')
         c['counter'] = {'url': evidence_url, 'hash': evidence_hash, 'challenger': str(gl.message.sender_address)}
         c['challenge_used'] = True
         result = self._judge(b, c, c['counter'])

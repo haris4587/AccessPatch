@@ -1,1 +1,29 @@
-{"network":"studionet","chain_id":61999,"contract":null,"transactions":[]}
+{
+  "network": "studionet",
+  "chain_id": 61999,
+  "rpc": "https://studio.genlayer.com/api",
+  "contract": "0x52a73B7209e03dDa55296dEd56Fb3579aCa273a8",
+  "studio_account": "0x7D632EF2ea482CD118afCEDed87e74982c4dC582",
+  "transactions": [
+    {
+      "action": "deploy",
+      "hash": "0x3aa1bc90d5e40f827d781350114b250f1754494de8cc5eb1b2f952fb7efe8380",
+      "status": "FINALIZED"
+    },
+    {
+      "action": "create_bounty",
+      "hash": "0xae838bee9b6a115a137a58ca7f5f7d9dc741198f746132994821efc66959e502",
+      "status": "FINALIZED"
+    },
+    {
+      "action": "submit_repair",
+      "hash": "0xdb937d9011df1db3b250f68e3911fa429fc79b1cc7bebd54487890a5be3815b7",
+      "status": "FINALIZED"
+    },
+    {
+      "action": "settle",
+      "hash": "0xd91d6c1af5831a828f1c9d14e3f96c4d67728a83023e39710427113106c722a3",
+      "status": "FINALIZED"
+    }
+  ]
+}

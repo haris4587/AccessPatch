@@ -1,0 +1,47 @@
+{
+  "count": 1,
+  "bounties": [
+    {
+      "attempts": 1,
+      "barrier": "The workshop signup email input has only placeholder text and no explicitly associated visible label.",
+      "baseline_hash": "129d807e74f4d3f9682ec23b511ddf7c037b959c7b6d558f42c5248cf6462430",
+      "baseline_url": "https://raw.githubusercontent.com/haris4587/AccessPatch/b885358d4e9822c80cd0f2f08a4263cd85069d1d/public/fixtures/before.html",
+      "candidate": {
+        "challenge_used": false,
+        "counter": null,
+        "fixer": "0x7D632EF2ea482CD118afCEDed87e74982c4dC582",
+        "page_hash": "fb587f937b647c93ea74a070e273a9328a073f5660f9a2bd63655dde01e6b3c5",
+        "report_hash": "5ef87e1f74e73b1d31922f96474ee6713f07c525c9b285b64c0ba379d3e15024",
+        "report_url": "https://raw.githubusercontent.com/haris4587/AccessPatch/b885358d4e9822c80cd0f2f08a4263cd85069d1d/public/fixtures/report.txt",
+        "retries": 0,
+        "settle_after": 1790756030
+      },
+      "challenge_seconds": 30,
+      "criteria": "Preserve the workshop signup form, email input id=email and Register button. Add a visible descriptive Email address label with for=email matching input id=email. Scope is source HTML association only, no runtime claims.",
+      "deadline": 1790759429,
+      "history": [
+        {
+          "action": "SUBMIT",
+          "counter_hash": "",
+          "page_hash": "fb587f937b647c93ea74a070e273a9328a073f5660f9a2bd63655dde01e6b3c5",
+          "reason": "The baseline HTML lacked a visible label for the email input, relying solely on placeholder text. The repair HTML successfully added a visible <label> element with the text 'Email address'. This label is correctly associated with the input using the 'for=\"email\"' attribute, which matches the input's 'id=\"email\"'. The original form, input, and submit button were preserved as required by the criteria.",
+          "report_hash": "5ef87e1f74e73b1d31922f96474ee6713f07c525c9b285b64c0ba379d3e15024",
+          "time": 1790756000,
+          "verdict": "RESOLVED"
+        }
+      ],
+      "id": 0,
+      "payment": {
+        "amount_wei": "100000000000000000000000000000000000",
+        "recipient": "0x7D632EF2ea482CD118afCEDed87e74982c4dC582",
+        "time": 1790756147,
+        "type": "REWARD"
+      },
+      "repair_url": "https://raw.githubusercontent.com/haris4587/AccessPatch/b885358d4e9822c80cd0f2f08a4263cd85069d1d/public/fixtures/after.html",
+      "reward_wei": "100000000000000000000000000000000000",
+      "sponsor": "0x7D632EF2ea482CD118afCEDed87e74982c4dC582",
+      "status": "PAID",
+      "title": "Synthetic live test: email label repair"
+    }
+  ]
+}

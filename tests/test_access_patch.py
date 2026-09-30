@@ -87,8 +87,11 @@ class TestContract(unittest.TestCase):
         self.assertTrue(self.state()['candidate']['challenge_used'])
     def test_successful_challenge_reopens(self):
         self.create();self.submit();self.gl.message.sender_address='challenger';self.verdict='NOT_RESOLVED';self.c.challenge(0,self.counter,self.digest(self.counter));self.assertEqual(self.state()['status'],'OPEN')
-    def test_unavailable_counter_blocks_payment(self):
-        self.create();self.submit();self.gl.message.sender_address='challenger';self.c.challenge(0,self.counter,'0'*64);self.assertEqual(self.state()['status'],'INCONCLUSIVE')
+    def test_unavailable_counter_rejected_without_consuming_challenge(self):
+        self.create();self.submit();self.gl.message.sender_address='challenger';
+        with self.assertRaises(UserError):self.c.challenge(0,self.counter,'0'*64)
+        self.assertEqual(self.state()['status'],'REVIEW')
+        self.assertFalse(self.state()['candidate']['challenge_used'])
     def test_refund_permission_deadline_exactly_once(self):
         self.create()
         with self.assertRaises(UserError):self.c.refund(0)
