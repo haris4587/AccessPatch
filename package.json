@@ -1,0 +1,1 @@
+{"name":"accesspatch","version":"1.0.0","private":true,"type":"module","scripts":{"dev":"vite --host 0.0.0.0","build":"vite build","test":"python3 -m unittest discover -s tests -v"},"dependencies":{"genlayer-js":"1.1.8","vite":"6.3.5"}}

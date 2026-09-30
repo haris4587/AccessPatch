@@ -1,0 +1,5 @@
+AccessPatch synthetic repair evidence
+Barrier: the workshop signup email input had only a placeholder, without an associated label.
+Repair: added the visible label Email address with for="email" matching the existing input id="email". The same signup form, email input and Register button remain.
+Scope: source HTML label association only. No claim of runtime screen-reader or keyboard testing, computed contrast or overall WCAG certification.
+Reproduce: fetch the before and after pages, compare label for and input id.
