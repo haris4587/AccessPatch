@@ -1,0 +1,215 @@
+{
+  "recorded_at": "2026-09-30T08:30:05.439Z",
+  "network": "Studionet",
+  "chain_id": 61999,
+  "contract": "0x52a73B7209e03dDa55296dEd56Fb3579aCa273a8",
+  "studio_account": "0x7D632EF2ea482CD118afCEDed87e74982c4dC582",
+  "source_sha256": "ef5065b55e2fa2924daab42666ba07fee9a883f3ead422684cef12d167584653",
+  "fixture_commit": "b885358d4e9822c80cd0f2f08a4263cd85069d1d",
+  "synthetic_evidence": true,
+  "sponsor_and_fixer_same_studio_account": true,
+  "tests": {
+    "offline_behavior_tests": 16,
+    "production_build": "passed"
+  },
+  "transactions": [
+    {
+      "action": "deploy",
+      "hash": "0x3aa1bc90d5e40f827d781350114b250f1754494de8cc5eb1b2f952fb7efe8380",
+      "status": "FINALIZED",
+      "result": "MAJORITY_AGREE",
+      "execution_mode": "NORMAL",
+      "leader_only": false,
+      "from": "0x7D632EF2ea482CD118afCEDed87e74982c4dC582",
+      "to": "0x52a73B7209e03dDa55296dEd56Fb3579aCa273a8",
+      "value_wei": "undefined",
+      "created_at": "2026-09-30T08:20:18.289641+00:00",
+      "value_credited": false,
+      "validator_votes": [
+        "AGREE",
+        "AGREE",
+        "AGREE",
+        "AGREE",
+        "AGREE"
+      ],
+      "leader_results": [
+        {
+          "execution_result": "SUCCESS",
+          "result_status": "return"
+        },
+        {
+          "execution_result": "SUCCESS",
+          "result_status": "return"
+        }
+      ],
+      "triggered_transactions": [],
+      "messages": []
+    },
+    {
+      "action": "create_bounty",
+      "hash": "0xae838bee9b6a115a137a58ca7f5f7d9dc741198f746132994821efc66959e502",
+      "status": "FINALIZED",
+      "result": "MAJORITY_AGREE",
+      "execution_mode": "NORMAL",
+      "leader_only": false,
+      "from": "0x7D632EF2ea482CD118afCEDed87e74982c4dC582",
+      "to": "0x52a73B7209e03dDa55296dEd56Fb3579aCa273a8",
+      "value_wei": "1000000000000000000",
+      "created_at": "2026-09-30T08:22:19.692607+00:00",
+      "value_credited": true,
+      "validator_votes": [
+        "IDLE",
+        "AGREE",
+        "AGREE",
+        "IDLE",
+        "AGREE"
+      ],
+      "leader_results": [
+        {
+          "execution_result": "SUCCESS",
+          "result_status": "return"
+        },
+        {
+          "execution_result": "ERROR",
+          "result_status": "contract_error"
+        }
+      ],
+      "triggered_transactions": [],
+      "messages": []
+    },
+    {
+      "action": "submit_repair",
+      "hash": "0xdb937d9011df1db3b250f68e3911fa429fc79b1cc7bebd54487890a5be3815b7",
+      "status": "FINALIZED",
+      "result": "MAJORITY_AGREE",
+      "execution_mode": "NORMAL",
+      "leader_only": false,
+      "from": "0x7D632EF2ea482CD118afCEDed87e74982c4dC582",
+      "to": "0x52a73B7209e03dDa55296dEd56Fb3579aCa273a8",
+      "value_wei": "undefined",
+      "created_at": "2026-09-30T08:23:48.182213+00:00",
+      "value_credited": false,
+      "validator_votes": [
+        "AGREE",
+        "IDLE",
+        "AGREE",
+        "AGREE",
+        "IDLE"
+      ],
+      "leader_results": [
+        {
+          "execution_result": "SUCCESS",
+          "result_status": "return"
+        },
+        {
+          "execution_result": "SUCCESS",
+          "result_status": "return"
+        }
+      ],
+      "triggered_transactions": [],
+      "messages": []
+    },
+    {
+      "action": "settle",
+      "hash": "0xd91d6c1af5831a828f1c9d14e3f96c4d67728a83023e39710427113106c722a3",
+      "status": "FINALIZED",
+      "result": "MAJORITY_AGREE",
+      "execution_mode": "NORMAL",
+      "leader_only": false,
+      "from": "0x7D632EF2ea482CD118afCEDed87e74982c4dC582",
+      "to": "0x52a73B7209e03dDa55296dEd56Fb3579aCa273a8",
+      "value_wei": "undefined",
+      "created_at": "2026-09-30T08:27:55.530758+00:00",
+      "value_credited": false,
+      "validator_votes": [
+        "IDLE",
+        "IDLE",
+        "AGREE",
+        "AGREE",
+        "AGREE"
+      ],
+      "leader_results": [
+        {
+          "execution_result": "SUCCESS",
+          "result_status": "return"
+        },
+        {
+          "execution_result": "ERROR",
+          "result_status": "contract_error"
+        }
+      ],
+      "triggered_transactions": [
+        "0xac9841a1e5b1829883e2b9befd175b261c9a12c35a2ef94925bdb8e7dad0f17e"
+      ],
+      "messages": [
+        {
+          "messageType": "0",
+          "recipient": "0x7D632EF2ea482CD118afCEDed87e74982c4dC582",
+          "value": "1000000000000000000",
+          "data": "",
+          "onAcceptance": false
+        }
+      ]
+    }
+  ],
+  "payout_transactions": [
+    {
+      "hash": "0xac9841a1e5b1829883e2b9befd175b261c9a12c35a2ef94925bdb8e7dad0f17e",
+      "status": "FINALIZED",
+      "result": "NO_MAJORITY",
+      "execution_mode": "NORMAL",
+      "leader_only": false,
+      "from": "0x52a73B7209e03dDa55296dEd56Fb3579aCa273a8",
+      "to": "0x7D632EF2ea482CD118afCEDed87e74982c4dC582",
+      "value_wei": "1000000000000000000",
+      "created_at": "2026-09-30T08:28:35.735760+00:00",
+      "value_credited": true,
+      "validator_votes": [],
+      "triggered_transactions": [],
+      "messages": []
+    }
+  ],
+  "finalized_bounty": {
+    "attempts": 1,
+    "barrier": "The workshop signup email input has only placeholder text and no explicitly associated visible label.",
+    "baseline_hash": "129d807e74f4d3f9682ec23b511ddf7c037b959c7b6d558f42c5248cf6462430",
+    "baseline_url": "https://raw.githubusercontent.com/haris4587/AccessPatch/b885358d4e9822c80cd0f2f08a4263cd85069d1d/public/fixtures/before.html",
+    "candidate": {
+      "challenge_used": false,
+      "counter": null,
+      "fixer": "0x7D632EF2ea482CD118afCEDed87e74982c4dC582",
+      "page_hash": "fb587f937b647c93ea74a070e273a9328a073f5660f9a2bd63655dde01e6b3c5",
+      "report_hash": "5ef87e1f74e73b1d31922f96474ee6713f07c525c9b285b64c0ba379d3e15024",
+      "report_url": "https://raw.githubusercontent.com/haris4587/AccessPatch/b885358d4e9822c80cd0f2f08a4263cd85069d1d/public/fixtures/report.txt",
+      "retries": 0,
+      "settle_after": 1790756658
+    },
+    "challenge_seconds": 30,
+    "criteria": "Preserve the workshop signup form, email input id=email and Register button. Add a visible descriptive Email address label with for=email matching input id=email. Scope is source HTML association only, no runtime claims.",
+    "deadline": 1790758339,
+    "history": [
+      {
+        "action": "SUBMIT",
+        "counter_hash": "",
+        "page_hash": "fb587f937b647c93ea74a070e273a9328a073f5660f9a2bd63655dde01e6b3c5",
+        "reason": "Baseline: <input id=\"email\" type=\"email\" placeholder=\"Enter email\"> (no label). Repair: <label for=\"email\">Email address</label><input id=\"email\" type=\"email\" placeholder=\"Enter email\" autocomplete=\"email\"><button type=\"submit\">Register</button> preserved. Explicit for/id match added; same context survives.",
+        "report_hash": "5ef87e1f74e73b1d31922f96474ee6713f07c525c9b285b64c0ba379d3e15024",
+        "time": 1790756628,
+        "verdict": "RESOLVED"
+      }
+    ],
+    "id": 0,
+    "payment": {
+      "amount_wei": "1000000000000000000",
+      "recipient": "0x7D632EF2ea482CD118afCEDed87e74982c4dC582",
+      "time": 1790756875,
+      "type": "REWARD"
+    },
+    "repair_url": "https://raw.githubusercontent.com/haris4587/AccessPatch/b885358d4e9822c80cd0f2f08a4263cd85069d1d/public/fixtures/after.html",
+    "reward_wei": "1000000000000000000",
+    "sponsor": "0x7D632EF2ea482CD118afCEDed87e74982c4dC582",
+    "status": "PAID",
+    "title": "Synthetic live test: repair email label · 1 GEN"
+  },
+  "contract_balance_wei": "0"
+}
