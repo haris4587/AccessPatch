@@ -1,4 +1,5 @@
 import './style.css';
+import {repairCommitment,freshSalt} from './commitment.js';
 import {createClient,createAccount,generatePrivateKey} from 'genlayer-js';
 import {studionet} from 'genlayer-js/chains';
 import {TransactionStatus,TransactionHashVariant} from 'genlayer-js/types';
@@ -45,27 +46,43 @@ function detail(){
 }
 function field(name,label,type='text',value='',help='') {return `<label class="field"><span>${esc(label)}</span>${type==='textarea'?`<textarea name="${name}" required maxlength="2000">${esc(value)}</textarea>`:`<input name="${name}" type="${type}" value="${esc(value)}" required ${type==='number'?'min="1" step="1"':''}>`}${help?`<small>${esc(help)}</small>`:''}</label>`;}
 let mode='create';
+function draftKey(){return 'ap-repair:'+deployment.contract.toLowerCase()+':'+account?.address.toLowerCase()+':'+selected.id;}
+function draft(){return account?JSON.parse(sessionStorage.getItem(draftKey())??'null'):null;}
 function openForm(m){mode=m;$('#formTitle').textContent={create:'Sponsor a repair',repair:'Submit repair evidence',challenge:'Challenge a repair'}[m];
  $('#fields').innerHTML=m==='create'?field('title','Bounty title')+field('baseline_url','Public original page URL','url')+field('repair_url','Authorized repaired page URL','url')+field('barrier','Specific accessibility barrier','textarea')+field('criteria','Acceptance criteria','textarea')+field('reward','Reward in sandbox GEN','text','0.1')+field('duration','Submission period in seconds','number','86400')+field('challenge_seconds','Challenge period in seconds','number','3600'):m==='repair'?field('report_url','Public repair report URL','url')+field('page_hash','Repaired page SHA-256')+field('report_hash','Report SHA-256'):field('evidence_url','Public counter-evidence URL','url')+field('evidence_hash','Counter-evidence SHA-256');
- $('#formHelp').textContent=m==='create'?'The contract fetches and pins the original page at creation. The authorized repaired URL is immutable. Fund the reward with this transaction.':'Commit lowercase SHA-256 of the exact UTF-8 response bytes. The contract fetches these sources independently; changed or unavailable evidence is inconclusive.';$('#dialog').showModal();}
+ if(m==='repair'){const saved=draft();if(saved)for(const name of ['report_url','page_hash','report_hash'])$('#form').elements[name].value=saved[name];}
+ $('#commitRepair').hidden=m!=='repair';$('#submit').textContent=m==='repair'?'2. Reveal committed repair':'Submit transaction';
+ $('#formHelp').textContent=m==='repair'?'Prepare the exact page/report bytes privately. Commit first, then publish them at their final HTTPS URLs. After the commitment finalizes and ages 60 seconds, reveal from the same account with unchanged fields. A secret salt stays in this browser session; keep the session open until reveal. Publishing evidence before committing allows others to make their own prior commitment.':m==='create'?'The contract fetches and pins the original page at creation. The authorized repaired URL is immutable. Fund the reward with this transaction.':'Commit lowercase SHA-256 of the exact UTF-8 response bytes. The contract fetches these sources independently; changed or unavailable evidence is inconclusive.';$('#dialog').showModal();}
 $('#new').onclick=()=>openForm('create');$('#close').onclick=()=>$('#dialog').close();
 $('#form').onsubmit=async ev=>{ev.preventDefault();const f=Object.fromEntries(new FormData(ev.target));try{let name,args,value=0n;
  if(mode==='create'){name='create_bounty';args=[f.title,f.baseline_url,f.repair_url,f.barrier,f.criteria,Number(f.duration),Number(f.challenge_seconds)];value=parseEther(f.reward);if(value<=0n)throw Error('Reward must be positive');}
- else if(mode==='repair'){name='submit_repair';args=[selected.id,f.report_url,f.page_hash,f.report_hash];}
+ else if(mode==='repair'){const saved=draft();if(!saved || ['report_url','page_hash','report_hash'].some(k=>saved[k]!==f[k]))throw Error('Commit these exact fields first.');name='submit_repair';args=[selected.id,f.report_url,f.page_hash,f.report_hash,saved.salt];}
  else{name='challenge';args=[selected.id,f.evidence_url,f.evidence_hash];}
- await execute(name,args,value);if(!busy)$('#dialog').close();}catch(e){say(e.message);}};
+ if(await execute(name,args,value)){$('#dialog').close();if(mode==='repair')sessionStorage.removeItem(draftKey());}}catch(e){say(e.message);}};
+$('#commitRepair').onclick=async()=>{
+ if(!$('#form').reportValidity() || busy)return;
+ try{
+ if(!account)throw Error('Create and fund a test account first.');
+ const fields=Object.fromEntries(new FormData($('#form')));
+ if(![fields.page_hash,fields.report_hash].every(x=>/^[0-9a-f]{64}$/.test(x)))throw Error('Use lowercase SHA-256 digests.');
+ const saved={...fields,salt:freshSalt()};
+ const hash=await repairCommitment({chainId:deployment.chain_id,contract:deployment.contract,bountyId:selected.id,fixer:account.address,reportUrl:fields.report_url,pageHash:fields.page_hash,reportHash:fields.report_hash,salt:saved.salt});
+ sessionStorage.setItem(draftKey(),JSON.stringify(saved));
+ if(await execute('commit_repair',[selected.id,hash],0n))say('Commitment finalized. Publish the exact committed sources, wait at least 60 seconds from commitment, then reveal from this session.');
+ }catch(e){say(e.message);}
+};
 async function execute(name,args,value){
- if(busy)return;
- if(!deployment.contract){say('Contract deployment is not yet configured.');return;}
- if(!account){say('Create and fund a test account first. The Studio account used for deployment remains in Studio.');return;}
+ if(busy)return false;
+ if(!deployment.contract){say('Contract deployment is not yet configured.');return false;}
+ if(!account){say('Create and fund a test account first. The Studio account used for deployment remains in Studio.');return false;}
  busy=true;document.querySelectorAll('button').forEach(b=>b.disabled=true);
  try{say('Submitting '+name+' to GenLayer…');const tx=await client.writeContract({address:deployment.contract,functionName:name,args,value,leaderOnly:false});say('Transaction submitted: '+tx+'. Waiting for finalized consensus…');
  const receipt=await client.waitForTransactionReceipt({hash:tx,status:TransactionStatus.FINALIZED,interval:4000,retries:90});
  const consensus=receipt.result_name??receipt.resultName;
  const leader=receipt.consensus_data?.leader_receipt?.[0];
  if((consensus && !['MAJORITY_AGREE','SUCCESS'].includes(consensus)) || (leader?.execution_result && leader.execution_result!=='SUCCESS'))throw Error('Transaction failed; inspect '+tx+' in Studio.');
- say('Finalized transaction: '+tx);await refresh();
- }catch(e){say('Transaction did not complete: '+e.message);}finally{busy=false;document.querySelectorAll('button').forEach(b=>b.disabled=false);}
+ say('Finalized transaction: '+tx);await refresh();return true;
+ }catch(e){say('Transaction did not complete: '+e.message);return false;}finally{busy=false;document.querySelectorAll('button').forEach(b=>b.disabled=false);}
 }
 $('#refresh').onclick=refresh;$('#filter').onchange=board;$('#prev').onclick=()=>{offset=Math.max(0,offset-10);refresh();};$('#next').onclick=()=>{offset+=10;refresh();};
 $('#contract').textContent=deployment.contract?'Studionet contract '+deployment.contract:'Awaiting deployment';
