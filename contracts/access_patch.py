@@ -14,10 +14,12 @@ class Recipient:
 
 class AccessPatch(gl.Contract):
     records: TreeMap[str, str]
+    commitments: TreeMap[str, str]
     count: u256
 
     def __init__(self):
         self.records = TreeMap()
+        self.commitments = TreeMap()
         self.count = u256(0)
 
     def _now(self) -> int:
@@ -108,15 +110,52 @@ class AccessPatch(gl.Contract):
     def _record(self, b: dict, result: dict, action: str) -> None:
         b['history'].append({'action': action, 'time': self._now(), **result})
 
+    def _commit_key(self, bounty_id: int, fixer: str) -> str:
+        return str(bounty_id) + ':' + fixer.lower()
+
+    def _repair_commitment(self, bounty_id: int, fixer: str, report_url: str, page_hash: str, report_hash: str, salt: str) -> str:
+        # Canonical ASCII JSON array; same encoding is used by the app.
+        payload = ['accesspatch-repair-v2', str(gl.message.chain_id), str(gl.message.contract_address).lower(), str(bounty_id), fixer.lower(), report_url, page_hash, report_hash, salt]
+        return self._hash(json.dumps(payload, ensure_ascii=True, separators=(',', ':')))
+
     @gl.public.write
-    def submit_repair(self, bounty_id: int, report_url: str, page_hash: str, report_hash: str) -> None:
+    def commit_repair(self, bounty_id: int, commitment_hash: str) -> None:
+        b = self._load(bounty_id)
+        self._check(b['status'] == 'OPEN' and self._now() + 60 < b['deadline'], 'Bounty is not open for commitments')
+        self._check(b['attempts'] < 10, 'Submission cap reached')
+        self._check(len(commitment_hash) == 64 and all(c in '0123456789abcdef' for c in commitment_hash), 'Invalid commitment digest')
+        key = self._commit_key(bounty_id, str(gl.message.sender_address))
+        previous = json.loads(self.commitments[key]) if key in self.commitments else None
+        sequence = previous['sequence'] + 1 if previous else 1
+        self._check(sequence <= 20, 'Commitment cap reached for this fixer')
+        self.commitments[key] = json.dumps({'hash': commitment_hash, 'committed_at': self._now(), 'revealed': False, 'sequence': sequence})
+
+    @gl.public.view
+    def get_commitment(self, bounty_id: int, fixer: str) -> str:
+        self._load(bounty_id)
+        key = self._commit_key(bounty_id, fixer)
+        return self.commitments[key] if key in self.commitments else 'null'
+
+    @gl.public.write
+    def submit_repair(self, bounty_id: int, report_url: str, page_hash: str, report_hash: str, salt: str) -> None:
         b = self._load(bounty_id)
         self._check(b['status'] == 'OPEN' and self._now() < b['deadline'], 'Bounty is not open')
         self._check(b['attempts'] < 10, 'Submission cap reached')
         self._url(report_url)
         self._check(all(len(x) == 64 and all(c in '0123456789abcdef' for c in x) for x in (page_hash, report_hash)), 'Use lowercase SHA-256 digests')
-        candidate = {'fixer': str(gl.message.sender_address), 'report_url': report_url, 'page_hash': page_hash, 'report_hash': report_hash, 'challenge_used': False, 'counter': None, 'retries': 0}
+        self._check(len(salt) == 64 and all(c in '0123456789abcdef' for c in salt), 'Use a secret 32-byte hexadecimal salt')
+        fixer = str(gl.message.sender_address)
+        key = self._commit_key(bounty_id, fixer)
+        self._check(key in self.commitments, 'Commit repair evidence before revealing it')
+        commitment = json.loads(self.commitments[key])
+        self._check(not commitment['revealed'], 'Commitment already revealed')
+        self._check(self._now() >= commitment['committed_at'] + 60, 'Wait 60 seconds after committing before reveal')
+        expected = self._repair_commitment(bounty_id, fixer, report_url, page_hash, report_hash, salt)
+        self._check(commitment['hash'] == expected, 'Evidence commitment does not match this fixer and submission')
+        candidate = {'fixer': fixer, 'report_url': report_url, 'page_hash': page_hash, 'report_hash': report_hash, 'commitment_hash': expected, 'committed_at': commitment['committed_at'], 'challenge_used': False, 'counter': None, 'retries': 0}
         result = self._judge(b, candidate, None)
+        commitment['revealed'] = True
+        self.commitments[key] = json.dumps(commitment)
         b['attempts'] += 1
         self._record(b, result, 'SUBMIT')
         if result['verdict'] != 'NOT_RESOLVED':
