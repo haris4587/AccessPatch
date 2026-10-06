@@ -9,10 +9,30 @@ assert.equal(await client.getChainId(),61999);
 assert.equal(await client.getContractCode(deployment.contract),fs.readFileSync('contracts/access_patch.py','utf8'));
 const schema=await client.getContractSchema(deployment.contract);
 assert.equal(schema.methods.create_bounty.payable,true);
+assert.ok(schema.methods.commit_repair);
+const transactions=[];
+for(const tx of deployment.transactions){
+ const receipt=await client.getTransaction({hash:tx.hash});transactions.push({action:tx.action,receipt});
+ assert.equal(receipt.statusName,'FINALIZED');
+ const leader=receipt.consensus_data?.leader_receipt?.[0];
+ if(tx.action==='copied_reveal'){assert.equal(leader.execution_result,'ERROR');assert.equal(leader.result.payload,'Evidence commitment does not match this fixer and submission');}
+ else assert.equal(leader.execution_result,'SUCCESS');
+}
+const commitment=JSON.parse(await client.readContract({address:deployment.contract,functionName:'get_commitment',args:[0,deployment.fixer],transactionHashVariant:TransactionHashVariant.LATEST_FINAL}));
+const copied=JSON.parse(await client.readContract({address:deployment.contract,functionName:'get_commitment',args:[0,deployment.copying_attacker],transactionHashVariant:TransactionHashVariant.LATEST_FINAL}));
+assert.equal(commitment.hash,copied.hash);assert.equal(commitment.revealed,true);assert.equal(copied.revealed,false);
 const bounty=JSON.parse(await client.readContract({address:deployment.contract,functionName:'get_bounty',args:[0],transactionHashVariant:TransactionHashVariant.LATEST_FINAL}));
 assert.equal(bounty.reward_wei,'1000000000000000000');
 assert.equal(bounty.status,'PAID');
 assert.equal(bounty.history[0].verdict,'RESOLVED');
+assert.equal(bounty.attempts,1);
+assert.equal(bounty.candidate.commitment_hash,commitment.hash);
+assert.equal(bounty.candidate.fixer.toLowerCase(),deployment.fixer.toLowerCase());
+assert.equal(bounty.payment.recipient.toLowerCase(),deployment.fixer.toLowerCase());
+assert.notEqual(bounty.payment.recipient.toLowerCase(),deployment.copying_attacker.toLowerCase());
+assert.ok(bounty.history[0].time>=commitment.committed_at+60);
+const attack=transactions.find(t=>t.action==='copied_reveal').receipt;
+assert.ok(Math.floor(Date.parse(attack.created_at)/1000)>=copied.committed_at+60);
 assert.equal(bounty.payment.amount_wei,bounty.reward_wei);
 const settlement=await client.getTransaction({hash:deployment.transactions.find(t=>t.action==='settle').hash});
 assert.equal(settlement.statusName,'FINALIZED');
@@ -23,4 +43,4 @@ assert.equal(String(payout.value),bounty.reward_wei);
 assert.equal(payout.to_address.toLowerCase(),bounty.payment.recipient.toLowerCase());
 const balance=await client.getBalance({address:deployment.contract});
 assert.equal(balance,0n);
-console.log(JSON.stringify({verified:true,contract:deployment.contract,sourceMatches:true,bounty,status:bounty.status,contract_balance_wei:String(balance)},null,2));
+console.log(JSON.stringify({verified:true,contract:deployment.contract,sourceMatches:true,copiedRevealRejected:true,rewardPaidOnlyToFixer:true,bounty,status:bounty.status,contract_balance_wei:String(balance)},null,2));
