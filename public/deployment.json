@@ -2,28 +2,49 @@
   "network": "studionet",
   "chain_id": 61999,
   "rpc": "https://studio.genlayer.com/api",
-  "contract": "0x52a73B7209e03dDa55296dEd56Fb3579aCa273a8",
-  "studio_account": "0x7D632EF2ea482CD118afCEDed87e74982c4dC582",
+  "contract": "0x02b7Cbe3D96495bE8B9686e20ab9F1642FC12855",
+  "studio_account": "0x9a02948698c132F153FaeEF0472B784F52Ecbec8",
   "transactions": [
     {
       "action": "deploy",
-      "hash": "0x3aa1bc90d5e40f827d781350114b250f1754494de8cc5eb1b2f952fb7efe8380",
+      "hash": "0x71f32ba235d790edf53f2024a8ba08c1da826a3b4e00d86e4b136b5a7eab872c",
       "status": "FINALIZED"
     },
     {
       "action": "create_bounty",
-      "hash": "0xae838bee9b6a115a137a58ca7f5f7d9dc741198f746132994821efc66959e502",
+      "hash": "0xbfa2a3b2ebd892776505b137f325abb8c4ac14a34e7ecbfc80d6b8aaeac3a8ff",
       "status": "FINALIZED"
     },
     {
+      "action": "commit_repair",
+      "hash": "0xe65a6f49a2979adb99141ea6e4a1760f46a3e361489830128d0a3b7175303b83",
+      "status": "FINALIZED"
+    },
+    {
+      "action": "copy_commitment",
+      "hash": "0xe8856c4fe679b61e991ea829dc06f246b3ecdf052ef230af2c743613641effbe",
+      "status": "FINALIZED"
+    },
+    {
+      "action": "copied_reveal",
+      "hash": "0x1152bda69ccfaf9f02855f2577fd584ff82b6652e31686b985719f2ec698bce0",
+      "status": "FINALIZED",
+      "expected_execution": "ERROR"
+    },
+    {
       "action": "submit_repair",
-      "hash": "0xdb937d9011df1db3b250f68e3911fa429fc79b1cc7bebd54487890a5be3815b7",
+      "hash": "0x9a3c3147c973f293a44b22a95153192e83143cdf37c495337b22172c840c5229",
       "status": "FINALIZED"
     },
     {
       "action": "settle",
-      "hash": "0xd91d6c1af5831a828f1c9d14e3f96c4d67728a83023e39710427113106c722a3",
+      "hash": "0xfbda11fa836508999e1ec029f4352f2b3cbb41c0ccb12bb774d88c29111e7161",
       "status": "FINALIZED"
     }
-  ]
+  ],
+  "release": "fixer-bound-v2",
+  "previous_contract": "0x52a73B7209e03dDa55296dEd56Fb3579aCa273a8",
+  "fixer": "0x9eaE58063D16EC78cF2E5875AD5B31382795284b",
+  "copying_attacker": "0x43662bAA88Fe460e22BfDbCFd3F7E723982041A1",
+  "payout_transaction": "0xb4b3ed4ff8f4a8bb938b0d3c4cc8d149e9db76f7de2ab58e3fe0e17f8f385b9e"
 }
