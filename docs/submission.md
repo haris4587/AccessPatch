@@ -1,11 +1,10 @@
-# AccessPatch — Project Explorer submission
+# Access Patch — October 9 steward update
 
-**Application date:** 09/30/2026  
-**Contribution type:** Builder → Projects Project  
-**Project name:** AccessPatch  
-**Logo:** `public/accesspatch-logo.png` (512 × 512 PNG)  
-**Primary tag:** AI & Agents  
-**Suggested focus tags:** Accessibility; Public Goods (select the closest available portal options)
+Keep the existing logo, project name, application date, Builder → Projects Project selection, and AI & Agents / Autonomous Execution / Verifiable Inference tags.
+
+## What did you change? (991 characters)
+
+Paste the complete text from [steward-response.md](steward-response.md).
 
 ## One-liner
 
@@ -13,38 +12,35 @@ Evidence-bound accessibility repair bounties with GenLayer review, challenges, a
 
 ## Description
 
-AccessPatch turns specific website accessibility barriers into funded repair bounties. A sponsor commits the original page, the authorized repair URL, acceptance criteria, deadline, challenge window, and a reward. The Intelligent Contract fetches and pins the original source. Before publishing evidence, a fixer commits a secret-salted hash bound to their sender address, network, contract, bounty, report URL, and page/report digests. After at least 60 seconds, they reveal from that same account. Copied commitments and reveals cannot redirect the reward. GenLayer's leader and validators independently fetch the repaired page and report, then judge whether the same feature remains and the committed barrier is meaningfully resolved.
+AccessPatch funds specific website accessibility repairs. A sponsor commits the original page, authorized repair URL, criteria, deadline and GEN reward. Fixers commit secret-salted evidence hashes bound to their address before revealing. GenLayer independently fetches and pins the repair/report, then validators assess whether the barrier is meaningfully resolved. Invalid evidence cannot reserve a candidate slot; INCONCLUSIVE candidates can be reopened by anyone or replaced by a valid reveal. Per-fixer limits prevent shared-cap exhaustion. Challenges use immutable reviewed snapshots, and later sponsor URL edits cannot veto an accepted payout. The app interacts with GenLayer using signed sandbox transactions and finalized reads. 32 tests pass. Live full-consensus Studio proof shows invalid/unresolved evidence followed by a 1 GEN payout despite sponsor mutation, plus INCONCLUSIVE reopening and refund. Review covers source HTML, not overall WCAG or runtime accessibility certification.
 
-Deterministic contract rules enforce permissions, ten-submission and three-retry caps, one bounded challenge per candidate, evidence integrity, reward settlement, and sponsor refunds. A resolved repair waits through its challenge window; settlement rechecks the committed evidence before emitting the escrowed reward to the fixer. Missing, changed or insufficient evidence produces an explicit inconclusive outcome.
+## How-to
 
-The app performs signed sandbox-account write transactions and explicitly finalized-state reads. It includes sponsoring, evidence submission, challenge, retry, settlement, refund, and append-only decision-history views. No external wallet connection is needed for the Studio deployment or live test.
+1. **Open the repair workspace.** Visit https://accesspatch.itzanza2.chatgpt.site/ and wait for “Finalized state connected.” Refresh bounties if needed. Public inspection needs no wallet connection.
+2. **Inspect recovery and payout.** Select bounty #0, “Synthetic adversarial recovery and payout · 1 GEN.” Inspect SUBMIT_REJECTED, NOT_RESOLVED, RESOLVED and the paid fixer. Open “View reviewed snapshots”; compare the retained labelled email form with the authorized URL, which was deliberately changed after approval.
+3. **Inspect an unresolved bounty reopening.** Select bounty #1, “Synthetic runtime uncertainty recovery · 1 GEN.” Its history shows INCONCLUSIVE → REOPEN, followed by a deadline refund. Review the independent caller and finalized receipts in docs/live-test.json.
+4. **Verify on GenLayer.** Open the current contract explorer below. Compare finalized calls and both outgoing Send credits with the website’s Live proof records. For reproducible checks, clone the repository, run npm ci, npm test, npm run build, and node scripts/verify-release.mjs.
 
-Current scope is source-HTML accessibility: meaningful labels, accessible names, semantics, and descriptive text. It does not certify overall WCAG compliance or claim to verify runtime keyboard behavior, actual screen-reader output, or computed contrast. The primary live test uses explicitly synthetic before/after pages and a 1 GEN sandbox reward. Studionet balances are simulated and have no monetary value.
+## Expected verification outcome
 
-## Why GenLayer
+Bounty #0 is PAID: invalid evidence was rejected, an unresolved attempt left it open, and the legitimate fixer received 1 sandbox GEN despite a later sponsor URL mutation. Its immutable reviewed snapshot retains the labelled email input. Bounty #1 records INCONCLUSIVE → REOPEN by an unrelated caller, then REFUNDED after its fixed deadline. Both outgoing transfers are finalized and credited; the current contract balance is 0 GEN. These are synthetic Studionet tests.
 
-Hash checks cannot judge whether a label is meaningful for the same control, whether a fix preserves the feature, or whether evidence overclaims the repair. GenLayer's semantic review is central to accepting a repair. Validators re-fetch evidence and independently recompute the verdict; they compare verdict and all decision-binding hashes, while deterministic code owns funds and lifecycle rules.
+## Replace current contract link
 
-## Evidence
+https://explorer-studio.genlayer.com/address/0x8acED57B7f0875A67D5A4CC56De48105949d7405
 
-- Public app: https://accesspatch.itzanza2.chatgpt.site
-- Repository: https://github.com/haris4587/AccessPatch
-- Deployed release contract: https://explorer-studio.genlayer.com/address/0x02b7Cbe3D96495bE8B9686e20ab9F1642FC12855
-- Open in Studio: https://studio.genlayer.com/?import-contract=0x02b7Cbe3D96495bE8B9686e20ab9F1642FC12855
-- Contract source: https://github.com/haris4587/AccessPatch/blob/main/contracts/access_patch.py
-- Passing behavior tests: https://github.com/haris4587/AccessPatch/blob/main/tests/test_access_patch.py
-- Live execution, finalized state, and payout record: https://github.com/haris4587/AccessPatch/blob/main/docs/live-test.json
-- Original v1 explorer screenshot (historical): https://github.com/haris4587/AccessPatch/blob/main/docs/accesspatch-live-proof.jpg
-- Finalized reward transfer: https://explorer-studio.genlayer.com/address/0x02b7Cbe3D96495bE8B9686e20ab9F1642FC12855
-- Reproducible live verifier: https://github.com/haris4587/AccessPatch/blob/main/scripts/verify-release.mjs
-- Synthetic original: https://raw.githubusercontent.com/haris4587/AccessPatch/b885358d4e9822c80cd0f2f08a4263cd85069d1d/public/fixtures/before.html
-- Synthetic repair: https://raw.githubusercontent.com/haris4587/AccessPatch/b885358d4e9822c80cd0f2f08a4263cd85069d1d/public/fixtures/after.html
-- Evidence report: https://raw.githubusercontent.com/haris4587/AccessPatch/b885358d4e9822c80cd0f2f08a4263cd85069d1d/public/fixtures/report.txt
+## Project links
 
-## Review notes
+- Website: https://accesspatch.itzanza2.chatgpt.site/
+- GitHub: https://github.com/haris4587/AccessPatch
 
-The contract compiled against the active GenVM runner. Twenty contract behavior tests plus one encoding test and the app production build pass. Offline tests use a clearly labelled SDK double and are supplemented by real, full-consensus Studio transactions; they do not claim to be a GenVM/LLM simulation. The v2 smoke test uses distinct built-in Studio sponsor, fixer, and copying-attacker accounts. It rejects a copied commitment/reveal, then pays the legitimate fixer. Earlier sandbox testing is retained separately and is not presented as the primary 1 GEN test. Portal submission is a separate action; this file prepares the content and evidence to submit.
+## Evidence to add or retain
 
-## Steward update — October 6, 2026
+- https://github.com/haris4587/AccessPatch/blob/main/docs/live-test.json
+- https://github.com/haris4587/AccessPatch/blob/main/docs/recovery-design.md
+- https://github.com/haris4587/AccessPatch/blob/main/tests/test_access_patch.py
+- https://github.com/haris4587/AccessPatch/blob/main/contracts/access_patch.py
+- https://github.com/haris4587/AccessPatch/blob/main/scripts/verify-release.mjs
+- Current explorer address above.
 
-The v2 deployment adds fixer-bound delayed commit/reveal. See `docs/steward-response.md` for the update-field text and `docs/live-test.json` for finalized attack rejection and legitimate payout evidence. The original v1 proof is retained in `docs/live-test-v1.json`; use the v2 address above for the current submission.
+Retain historical v1/v2 proof only as historical evidence; it does not establish the v3 recovery behavior. Leave the optional video empty unless a real demo is provided. This document prepares the portal update; publishing the app does not resubmit the contribution form.
