@@ -4,7 +4,7 @@
 
 | Attack | Deterministic defense |
 | --- | --- |
-| Reveal unavailable evidence or wrong digests | Strict consensus fetch preflight fails before candidate installation, commitment consumption, attempt accounting, or LLM assessment. |
+| Reveal unavailable evidence or wrong digests | Strict consensus fetch preflight records SUBMIT_REJECTED and consumes only the bad sender commitment; no candidate installation, reviewed-attempt accounting, or LLM assessment. |
 | Reveal semantically insufficient evidence and abandon candidate | INCONCLUSIVE is nonexclusive. Anyone may call `reopen_bounty`; a valid reveal atomically replaces it. No sponsor consent or retry prerequisite. |
 | Exhaust retries to retain slot | Only the candidate fixer can retry, at most three times; reopening remains permissionless after exhaustion. |
 | Use ten failed attempts to deny every other fixer | Ten reviewed submissions per authenticated fixer per bounty; global attempt count is statistics only. |
@@ -25,6 +25,6 @@ The reward purchases the source-HTML repair represented by the exact consensus-a
 
 ## Tests
 
-`npm test` runs 28 contract behavior tests and one canonical browser/Python encoding test. These execute the actual contract with an explicit SDK double; they are not claimed to simulate GenVM consensus. Adversarial cases prove invalid-hash recovery and settlement, retry exhaustion recovery, automatic replacement, per-fixer caps, protected REVIEW/PAID, stranger retry rejection, post-deadline recovery/refund, inconclusive challenge preservation, and sponsor deletion followed by payout. Real full-consensus Studio evidence is recorded separately in `docs/live-test.json`.
+`npm test` runs 31 contract behavior tests and one canonical browser/Python encoding test. These execute the actual contract with an explicit SDK double; they are not claimed to simulate GenVM consensus. Adversarial cases prove invalid-hash recovery and settlement, retry exhaustion recovery, automatic replacement, per-fixer caps, protected REVIEW/PAID, stranger retry rejection, post-deadline recovery/refund, inconclusive challenge preservation, and sponsor deletion followed by payout. Real full-consensus Studio evidence is recorded separately in `docs/live-test.json`.
 
 Earlier deployments are immutable and retain their historical behavior. The public app points to the new v3 contract; this is a new deployment, not a retroactive patch to previous bounties.
