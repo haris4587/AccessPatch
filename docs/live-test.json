@@ -1,43 +1,32 @@
 {
-  "recorded_at": "2026-10-06T17:51:55.430Z",
+  "recorded_at": "2026-10-09T06:55:09.163Z",
+  "release": "v3",
   "network": "Studionet",
   "chain_id": 61999,
-  "contract": "0x02b7Cbe3D96495bE8B9686e20ab9F1642FC12855",
-  "studio_account": "0x9a02948698c132F153FaeEF0472B784F52Ecbec8",
-  "source_sha256": "b277c771f9c9f2f63318e11deedb4a8b2832aa8d92e87ec2f6cfbc0c46ca1f37",
-  "fixture_commit": "b885358d4e9822c80cd0f2f08a4263cd85069d1d",
+  "contract": "0x8acED57B7f0875A67D5A4CC56De48105949d7405",
+  "studio_account": "0x379aa6A94a159190652ec1cFf43B299F0AbCcbB8",
+  "fixer": "0x1f8F31Cd3eD7e1911E045409AbC034227634A680",
+  "adversarial_attacker": "0xc4763A67FE91382401Fda530B29398D47F643585",
+  "source_sha256": "a97d1934297108628e792fb7396c0108339e623e5158b40020348cd2d0237db8",
   "synthetic_evidence": true,
   "sponsor_and_fixer_same_studio_account": false,
-  "copying_attacker": "0x43662bAA88Fe460e22BfDbCFd3F7E723982041A1",
   "tests": {
-    "offline_contract_behavior_tests": 20,
+    "offline_contract_behavior_tests": 31,
     "commitment_encoding_tests": 1,
     "production_build": "passed"
-  },
-  "commitment": {
-    "hash": "4c18d908f3491749b887c832810e5c680c77457b1b140a9cf25d57ae6fa589f4",
-    "committed_at": 1791308314,
-    "revealed": true,
-    "sequence": 1
-  },
-  "attacker_commitment": {
-    "hash": "4c18d908f3491749b887c832810e5c680c77457b1b140a9cf25d57ae6fa589f4",
-    "committed_at": 1791308471,
-    "revealed": false,
-    "sequence": 1
   },
   "transactions": [
     {
       "action": "deploy",
-      "hash": "0x71f32ba235d790edf53f2024a8ba08c1da826a3b4e00d86e4b136b5a7eab872c",
+      "hash": "0xff7dbce42e56542b955e9e3fd9baf239817ea0e64b60ed6129c76e4095534dc1",
       "status": "FINALIZED",
       "result": "MAJORITY_AGREE",
       "execution_mode": "NORMAL",
       "leader_only": false,
-      "from": "0x9a02948698c132F153FaeEF0472B784F52Ecbec8",
-      "to": "0x02b7Cbe3D96495bE8B9686e20ab9F1642FC12855",
+      "from": "0x379aa6A94a159190652ec1cFf43B299F0AbCcbB8",
+      "to": "0x8acED57B7f0875A67D5A4CC56De48105949d7405",
       "value_wei": null,
-      "created_at": "2026-10-06T17:34:46.988811+00:00",
+      "created_at": "2026-10-09T06:29:58.188803+00:00",
       "value_credited": false,
       "validator_votes": [
         "AGREE",
@@ -68,26 +57,25 @@
           }
         }
       ],
-      "triggered_transactions": [],
-      "messages": []
+      "triggered_transactions": []
     },
     {
       "action": "create_bounty",
-      "hash": "0xbfa2a3b2ebd892776505b137f325abb8c4ac14a34e7ecbfc80d6b8aaeac3a8ff",
+      "hash": "0x5b9fdeeae91a92f682932631f1413884a68a537c00434d44d0886dd50355f884",
       "status": "FINALIZED",
       "result": "MAJORITY_AGREE",
       "execution_mode": "NORMAL",
       "leader_only": false,
-      "from": "0x9a02948698c132F153FaeEF0472B784F52Ecbec8",
-      "to": "0x02b7Cbe3D96495bE8B9686e20ab9F1642FC12855",
+      "from": "0x379aa6A94a159190652ec1cFf43B299F0AbCcbB8",
+      "to": "0x8acED57B7f0875A67D5A4CC56De48105949d7405",
       "value_wei": "1000000000000000000",
-      "created_at": "2026-10-06T17:36:26.588785+00:00",
+      "created_at": "2026-10-09T06:31:15.440827+00:00",
       "value_credited": true,
       "validator_votes": [
-        "IDLE",
-        "IDLE",
         "AGREE",
         "AGREE",
+        "IDLE",
+        "IDLE",
         "AGREE"
       ],
       "leader_results": [
@@ -102,70 +90,35 @@
           }
         },
         {
-          "execution_result": "ERROR",
-          "result_status": "contract_error",
-          "result_payload": "idle"
-        }
-      ],
-      "triggered_transactions": [],
-      "messages": []
-    },
-    {
-      "action": "commit_repair",
-      "hash": "0xe65a6f49a2979adb99141ea6e4a1760f46a3e361489830128d0a3b7175303b83",
-      "status": "FINALIZED",
-      "result": "MAJORITY_AGREE",
-      "execution_mode": "NORMAL",
-      "leader_only": false,
-      "from": "0x9eaE58063D16EC78cF2E5875AD5B31382795284b",
-      "to": "0x02b7Cbe3D96495bE8B9686e20ab9F1642FC12855",
-      "value_wei": null,
-      "created_at": "2026-10-06T17:38:34.800342+00:00",
-      "value_credited": false,
-      "validator_votes": [
-        "IDLE",
-        "AGREE",
-        "AGREE",
-        "IDLE",
-        "AGREE"
-      ],
-      "leader_results": [
-        {
           "execution_result": "SUCCESS",
           "result_status": "return",
           "result_payload": {
             "raw": [
-              0
+              1
             ],
-            "readable": "null"
+            "readable": "0"
           }
-        },
-        {
-          "execution_result": "ERROR",
-          "result_status": "contract_error",
-          "result_payload": "idle"
         }
       ],
-      "triggered_transactions": [],
-      "messages": []
+      "triggered_transactions": []
     },
     {
-      "action": "copy_commitment",
-      "hash": "0xe8856c4fe679b61e991ea829dc06f246b3ecdf052ef230af2c743613641effbe",
+      "action": "invalid_commit",
+      "hash": "0x060c4ddee9522b295e8d59972958130509bdcbd7c9e97566a2cb0c3dee849275",
       "status": "FINALIZED",
       "result": "MAJORITY_AGREE",
       "execution_mode": "NORMAL",
       "leader_only": false,
-      "from": "0x43662bAA88Fe460e22BfDbCFd3F7E723982041A1",
-      "to": "0x02b7Cbe3D96495bE8B9686e20ab9F1642FC12855",
+      "from": "0xc4763A67FE91382401Fda530B29398D47F643585",
+      "to": "0x8acED57B7f0875A67D5A4CC56De48105949d7405",
       "value_wei": null,
-      "created_at": "2026-10-06T17:41:11.118818+00:00",
+      "created_at": "2026-10-09T06:32:22.835695+00:00",
       "value_credited": false,
       "validator_votes": [
         "AGREE",
         "AGREE",
-        "IDLE",
         "AGREE",
+        "IDLE",
         "AGREE"
       ],
       "leader_results": [
@@ -190,23 +143,65 @@
           }
         }
       ],
-      "triggered_transactions": [],
-      "messages": []
+      "triggered_transactions": []
     },
     {
-      "action": "copied_reveal",
-      "hash": "0x1152bda69ccfaf9f02855f2577fd584ff82b6652e31686b985719f2ec698bce0",
+      "action": "invalid_reveal",
+      "hash": "0x0860d8782f27a6d949b6b537bc27a4dc8618fed79184cf994b195a9eeafb71ae",
       "status": "FINALIZED",
       "result": "MAJORITY_AGREE",
       "execution_mode": "NORMAL",
       "leader_only": false,
-      "from": "0x43662bAA88Fe460e22BfDbCFd3F7E723982041A1",
-      "to": "0x02b7Cbe3D96495bE8B9686e20ab9F1642FC12855",
+      "from": "0xc4763A67FE91382401Fda530B29398D47F643585",
+      "to": "0x8acED57B7f0875A67D5A4CC56De48105949d7405",
       "value_wei": null,
-      "created_at": "2026-10-06T17:43:43.337782+00:00",
+      "created_at": "2026-10-09T06:33:57.822553+00:00",
       "value_credited": false,
       "validator_votes": [
+        "AGREE",
         "IDLE",
+        "IDLE",
+        "AGREE",
+        "AGREE"
+      ],
+      "leader_results": [
+        {
+          "execution_result": "SUCCESS",
+          "result_status": "return",
+          "result_payload": {
+            "raw": [
+              0
+            ],
+            "readable": "null"
+          }
+        },
+        {
+          "execution_result": "SUCCESS",
+          "result_status": "return",
+          "result_payload": {
+            "raw": [
+              0
+            ],
+            "readable": "null"
+          }
+        }
+      ],
+      "triggered_transactions": []
+    },
+    {
+      "action": "unresolved_commit",
+      "hash": "0x34e1c564b250eaf7553cd2c844df46811d403c17cc2c624aac42cf68b231852f",
+      "status": "FINALIZED",
+      "result": "MAJORITY_AGREE",
+      "execution_mode": "NORMAL",
+      "leader_only": false,
+      "from": "0xc4763A67FE91382401Fda530B29398D47F643585",
+      "to": "0x8acED57B7f0875A67D5A4CC56De48105949d7405",
+      "value_wei": null,
+      "created_at": "2026-10-09T06:34:59.816984+00:00",
+      "value_credited": false,
+      "validator_votes": [
+        "AGREE",
         "AGREE",
         "AGREE",
         "AGREE",
@@ -214,30 +209,82 @@
       ],
       "leader_results": [
         {
-          "execution_result": "ERROR",
-          "result_status": "rollback",
-          "result_payload": "Evidence commitment does not match this fixer and submission"
+          "execution_result": "SUCCESS",
+          "result_status": "return",
+          "result_payload": {
+            "raw": [
+              0
+            ],
+            "readable": "null"
+          }
         },
         {
-          "execution_result": "ERROR",
-          "result_status": "contract_error",
-          "result_payload": "idle"
+          "execution_result": "SUCCESS",
+          "result_status": "return",
+          "result_payload": {
+            "raw": [
+              0
+            ],
+            "readable": "null"
+          }
         }
       ],
-      "triggered_transactions": [],
-      "messages": []
+      "triggered_transactions": []
     },
     {
-      "action": "submit_repair",
-      "hash": "0x9a3c3147c973f293a44b22a95153192e83143cdf37c495337b22172c840c5229",
+      "action": "legitimate_commit",
+      "hash": "0xf681c56737736838e0378f6c3dbdb072c76c6887814cd497fd7ad4aa757d615c",
       "status": "FINALIZED",
       "result": "MAJORITY_AGREE",
       "execution_mode": "NORMAL",
       "leader_only": false,
-      "from": "0x9eaE58063D16EC78cF2E5875AD5B31382795284b",
-      "to": "0x02b7Cbe3D96495bE8B9686e20ab9F1642FC12855",
+      "from": "0x1f8F31Cd3eD7e1911E045409AbC034227634A680",
+      "to": "0x8acED57B7f0875A67D5A4CC56De48105949d7405",
       "value_wei": null,
-      "created_at": "2026-10-06T17:45:07.978591+00:00",
+      "created_at": "2026-10-09T06:35:57.330510+00:00",
+      "value_credited": false,
+      "validator_votes": [
+        "AGREE",
+        "AGREE",
+        "IDLE",
+        "IDLE",
+        "AGREE"
+      ],
+      "leader_results": [
+        {
+          "execution_result": "SUCCESS",
+          "result_status": "return",
+          "result_payload": {
+            "raw": [
+              0
+            ],
+            "readable": "null"
+          }
+        },
+        {
+          "execution_result": "SUCCESS",
+          "result_status": "return",
+          "result_payload": {
+            "raw": [
+              0
+            ],
+            "readable": "null"
+          }
+        }
+      ],
+      "triggered_transactions": []
+    },
+    {
+      "action": "unresolved_reveal",
+      "hash": "0xd91c4f1f8461f9a6c81ebdf4bc6076345b9f40217f3c0a3beaf74032a7d2bdea",
+      "status": "FINALIZED",
+      "result": "MAJORITY_AGREE",
+      "execution_mode": "NORMAL",
+      "leader_only": false,
+      "from": "0xc4763A67FE91382401Fda530B29398D47F643585",
+      "to": "0x8acED57B7f0875A67D5A4CC56De48105949d7405",
+      "value_wei": null,
+      "created_at": "2026-10-09T06:36:24.168586+00:00",
       "value_credited": false,
       "validator_votes": [
         "AGREE",
@@ -268,25 +315,307 @@
           }
         }
       ],
-      "triggered_transactions": [],
-      "messages": []
+      "triggered_transactions": []
     },
     {
-      "action": "settle",
-      "hash": "0xfbda11fa836508999e1ec029f4352f2b3cbb41c0ccb12bb774d88c29111e7161",
+      "action": "legitimate_reveal",
+      "hash": "0x11525018266de5d0a470e576de9056c5dbd568ebe17097affc8b5f66ee99c711",
       "status": "FINALIZED",
       "result": "MAJORITY_AGREE",
       "execution_mode": "NORMAL",
       "leader_only": false,
-      "from": "0x43662bAA88Fe460e22BfDbCFd3F7E723982041A1",
-      "to": "0x02b7Cbe3D96495bE8B9686e20ab9F1642FC12855",
+      "from": "0x1f8F31Cd3eD7e1911E045409AbC034227634A680",
+      "to": "0x8acED57B7f0875A67D5A4CC56De48105949d7405",
       "value_wei": null,
-      "created_at": "2026-10-06T17:50:16.439203+00:00",
+      "created_at": "2026-10-09T06:40:53.889150+00:00",
       "value_credited": false,
       "validator_votes": [
         "AGREE",
         "IDLE",
+        "AGREE",
         "IDLE",
+        "AGREE"
+      ],
+      "leader_results": [
+        {
+          "execution_result": "SUCCESS",
+          "result_status": "return",
+          "result_payload": {
+            "raw": [
+              0
+            ],
+            "readable": "null"
+          }
+        },
+        {
+          "execution_result": "SUCCESS",
+          "result_status": "return",
+          "result_payload": {
+            "raw": [
+              0
+            ],
+            "readable": "null"
+          }
+        }
+      ],
+      "triggered_transactions": []
+    },
+    {
+      "action": "recovery_create",
+      "hash": "0xf2d1b3816a590be05dd5c88474838d5d040e2cf8d805061ffee35d8c0d9755f1",
+      "status": "FINALIZED",
+      "result": "MAJORITY_AGREE",
+      "execution_mode": "NORMAL",
+      "leader_only": false,
+      "from": "0x379aa6A94a159190652ec1cFf43B299F0AbCcbB8",
+      "to": "0x8acED57B7f0875A67D5A4CC56De48105949d7405",
+      "value_wei": "1000000000000000000",
+      "created_at": "2026-10-09T06:44:21.416561+00:00",
+      "value_credited": true,
+      "validator_votes": [
+        "AGREE",
+        "IDLE",
+        "IDLE",
+        "AGREE",
+        "AGREE"
+      ],
+      "leader_results": [
+        {
+          "execution_result": "SUCCESS",
+          "result_status": "return",
+          "result_payload": {
+            "raw": [
+              9
+            ],
+            "readable": "1"
+          }
+        },
+        {
+          "execution_result": "SUCCESS",
+          "result_status": "return",
+          "result_payload": {
+            "raw": [
+              9
+            ],
+            "readable": "1"
+          }
+        }
+      ],
+      "triggered_transactions": []
+    },
+    {
+      "action": "recovery_commit",
+      "hash": "0xd6b9dab5c225032796838ecdbafacbc6503b6091741e3f57491ae858c9670aad",
+      "status": "FINALIZED",
+      "result": "MAJORITY_AGREE",
+      "execution_mode": "NORMAL",
+      "leader_only": false,
+      "from": "0xc4763A67FE91382401Fda530B29398D47F643585",
+      "to": "0x8acED57B7f0875A67D5A4CC56De48105949d7405",
+      "value_wei": null,
+      "created_at": "2026-10-09T06:45:32.565108+00:00",
+      "value_credited": false,
+      "validator_votes": [
+        "AGREE",
+        "AGREE",
+        "IDLE",
+        "IDLE",
+        "AGREE"
+      ],
+      "leader_results": [
+        {
+          "execution_result": "SUCCESS",
+          "result_status": "return",
+          "result_payload": {
+            "raw": [
+              0
+            ],
+            "readable": "null"
+          }
+        },
+        {
+          "execution_result": "SUCCESS",
+          "result_status": "return",
+          "result_payload": {
+            "raw": [
+              0
+            ],
+            "readable": "null"
+          }
+        }
+      ],
+      "triggered_transactions": []
+    },
+    {
+      "action": "settle",
+      "hash": "0x1db49f53a167bcf4927bc2d8701c889ffa87179d9f072491a803c07e349985cb",
+      "status": "FINALIZED",
+      "result": "MAJORITY_AGREE",
+      "execution_mode": "NORMAL",
+      "leader_only": false,
+      "from": "0xc4763A67FE91382401Fda530B29398D47F643585",
+      "to": "0x8acED57B7f0875A67D5A4CC56De48105949d7405",
+      "value_wei": null,
+      "created_at": "2026-10-09T06:46:14.733984+00:00",
+      "value_credited": false,
+      "validator_votes": [
+        "AGREE",
+        "AGREE",
+        "AGREE",
+        "IDLE",
+        "IDLE"
+      ],
+      "leader_results": [
+        {
+          "execution_result": "SUCCESS",
+          "result_status": "return",
+          "result_payload": {
+            "raw": [
+              0
+            ],
+            "readable": "null"
+          }
+        },
+        {
+          "execution_result": "SUCCESS",
+          "result_status": "return",
+          "result_payload": {
+            "raw": [
+              0
+            ],
+            "readable": "null"
+          }
+        }
+      ],
+      "triggered_transactions": [
+        "0x96c44e0aaa75edccd63443b143187664e7f80297e619c067384034e61205cc93"
+      ]
+    },
+    {
+      "action": "premature_recovery_commit",
+      "hash": "0x061832689d4ad204db0082b0fc190f7b94f6e3cd20700009e92de71c57b2b550",
+      "status": "FINALIZED",
+      "result": "MAJORITY_AGREE",
+      "execution_mode": "NORMAL",
+      "leader_only": false,
+      "from": "0xc4763A67FE91382401Fda530B29398D47F643585",
+      "to": "0x8acED57B7f0875A67D5A4CC56De48105949d7405",
+      "value_wei": null,
+      "created_at": "2026-10-09T06:42:09.485778+00:00",
+      "value_credited": false,
+      "validator_votes": [
+        "IDLE",
+        "AGREE",
+        "IDLE",
+        "AGREE",
+        "AGREE"
+      ],
+      "leader_results": [
+        {
+          "execution_result": "ERROR",
+          "result_status": "rollback",
+          "result_payload": "Unknown bounty"
+        },
+        {
+          "execution_result": "ERROR",
+          "result_status": "contract_error",
+          "result_payload": "idle"
+        }
+      ],
+      "triggered_transactions": []
+    },
+    {
+      "action": "recovery_reveal",
+      "hash": "0x202faaf7e5584c5e3eac0fca27ad9adc13662ef76a4f5cefeda2f0384b23a115",
+      "status": "FINALIZED",
+      "result": "MAJORITY_AGREE",
+      "execution_mode": "NORMAL",
+      "leader_only": false,
+      "from": "0xc4763A67FE91382401Fda530B29398D47F643585",
+      "to": "0x8acED57B7f0875A67D5A4CC56De48105949d7405",
+      "value_wei": null,
+      "created_at": "2026-10-09T06:46:49.898117+00:00",
+      "value_credited": false,
+      "validator_votes": [
+        "IDLE",
+        "AGREE",
+        "AGREE",
+        "AGREE",
+        "IDLE"
+      ],
+      "leader_results": [
+        {
+          "execution_result": "SUCCESS",
+          "result_status": "return",
+          "result_payload": {
+            "raw": [
+              0
+            ],
+            "readable": "null"
+          }
+        },
+        {
+          "execution_result": "ERROR",
+          "result_status": "contract_error",
+          "result_payload": "idle"
+        }
+      ],
+      "triggered_transactions": []
+    },
+    {
+      "action": "reopen_bounty",
+      "hash": "0x4068da6fce2037afdd2c4f185d20dfb606c7ced904d1b3f7d3b4cc785bf50570",
+      "status": "FINALIZED",
+      "result": "MAJORITY_AGREE",
+      "execution_mode": "NORMAL",
+      "leader_only": false,
+      "from": "0x1f8F31Cd3eD7e1911E045409AbC034227634A680",
+      "to": "0x8acED57B7f0875A67D5A4CC56De48105949d7405",
+      "value_wei": null,
+      "created_at": "2026-10-09T06:48:47.359713+00:00",
+      "value_credited": false,
+      "validator_votes": [
+        "IDLE",
+        "IDLE",
+        "AGREE",
+        "AGREE",
+        "AGREE"
+      ],
+      "leader_results": [
+        {
+          "execution_result": "SUCCESS",
+          "result_status": "return",
+          "result_payload": {
+            "raw": [
+              0
+            ],
+            "readable": "null"
+          }
+        },
+        {
+          "execution_result": "ERROR",
+          "result_status": "contract_error",
+          "result_payload": "idle"
+        }
+      ],
+      "triggered_transactions": []
+    },
+    {
+      "action": "recovery_refund",
+      "hash": "0x79c1703bdf5ec0fe6617b8d7bd237001c3851bca1fcea90df2ab501e069235af",
+      "status": "FINALIZED",
+      "result": "MAJORITY_AGREE",
+      "execution_mode": "NORMAL",
+      "leader_only": false,
+      "from": "0x379aa6A94a159190652ec1cFf43B299F0AbCcbB8",
+      "to": "0x8acED57B7f0875A67D5A4CC56De48105949d7405",
+      "value_wei": null,
+      "created_at": "2026-10-09T06:54:08.145095+00:00",
+      "value_credited": false,
+      "validator_votes": [
+        "AGREE",
+        "AGREE",
+        "AGREE",
         "AGREE",
         "AGREE"
       ],
@@ -313,79 +642,314 @@
         }
       ],
       "triggered_transactions": [
-        "0xb4b3ed4ff8f4a8bb938b0d3c4cc8d149e9db76f7de2ab58e3fe0e17f8f385b9e"
-      ],
-      "messages": [
-        {
-          "messageType": "0",
-          "recipient": "0x9eaE58063D16EC78cF2E5875AD5B31382795284b",
-          "value": "1000000000000000000",
-          "data": "",
-          "onAcceptance": false
-        }
+        "0x1f046a2a7df16fd7656f03a7bd6b5464d32f8d986bfbdb082f98ec4f52429799"
       ]
     }
   ],
   "payout_transactions": [
     {
-      "hash": "0xb4b3ed4ff8f4a8bb938b0d3c4cc8d149e9db76f7de2ab58e3fe0e17f8f385b9e",
+      "hash": "0x96c44e0aaa75edccd63443b143187664e7f80297e619c067384034e61205cc93",
       "status": "FINALIZED",
       "result": "NO_MAJORITY",
       "execution_mode": "NORMAL",
       "leader_only": false,
-      "from": "0x02b7Cbe3D96495bE8B9686e20ab9F1642FC12855",
-      "to": "0x9eaE58063D16EC78cF2E5875AD5B31382795284b",
+      "from": "0x8acED57B7f0875A67D5A4CC56De48105949d7405",
+      "to": "0x1f8F31Cd3eD7e1911E045409AbC034227634A680",
       "value_wei": "1000000000000000000",
-      "created_at": "2026-10-06T17:50:54.976699+00:00",
+      "created_at": "2026-10-09T06:46:50.947461+00:00",
       "value_credited": true,
       "validator_votes": [],
-      "triggered_transactions": [],
-      "messages": []
+      "triggered_transactions": []
+    },
+    {
+      "hash": "0x1f046a2a7df16fd7656f03a7bd6b5464d32f8d986bfbdb082f98ec4f52429799",
+      "status": "FINALIZED",
+      "result": "NO_MAJORITY",
+      "execution_mode": "NORMAL",
+      "leader_only": false,
+      "from": "0x8acED57B7f0875A67D5A4CC56De48105949d7405",
+      "to": "0x379aa6A94a159190652ec1cFf43B299F0AbCcbB8",
+      "value_wei": "1000000000000000000",
+      "created_at": "2026-10-09T06:54:41.874125+00:00",
+      "value_credited": true,
+      "validator_votes": [],
+      "triggered_transactions": []
     }
   ],
   "finalized_bounty": {
-    "attempts": 1,
-    "barrier": "Workshop signup email input has placeholder text but no explicitly associated visible label.",
+    "attempts": 2,
+    "barrier": "The newsletter signup email input has no meaningful accessible name.",
     "baseline_hash": "129d807e74f4d3f9682ec23b511ddf7c037b959c7b6d558f42c5248cf6462430",
     "baseline_url": "https://raw.githubusercontent.com/haris4587/AccessPatch/b885358d4e9822c80cd0f2f08a4263cd85069d1d/public/fixtures/before.html",
     "candidate": {
       "challenge_used": false,
-      "commitment_hash": "4c18d908f3491749b887c832810e5c680c77457b1b140a9cf25d57ae6fa589f4",
-      "committed_at": 1791308314,
+      "commitment_hash": "b9025711d6b9e9e56d25d73f5946c2acdf508d984155eb0605e5262a81749cec",
+      "committed_at": 1791527757,
       "counter": null,
-      "fixer": "0x9eaE58063D16EC78cF2E5875AD5B31382795284b",
+      "fixer": "0x1f8F31Cd3eD7e1911E045409AbC034227634A680",
       "page_hash": "fb587f937b647c93ea74a070e273a9328a073f5660f9a2bd63655dde01e6b3c5",
       "report_hash": "5ef87e1f74e73b1d31922f96474ee6713f07c525c9b285b64c0ba379d3e15024",
       "report_url": "https://raw.githubusercontent.com/haris4587/AccessPatch/b885358d4e9822c80cd0f2f08a4263cd85069d1d/public/fixtures/report.txt",
       "retries": 0,
-      "settle_after": 1791308737
+      "settle_after": 1791528353
     },
-    "challenge_seconds": 30,
-    "criteria": "Preserve signup form, email input id=email and Register button. Add visible descriptive Email address label with for=email matching id=email. Scope: source HTML association only.",
-    "deadline": 1791315386,
+    "challenge_seconds": 300,
+    "criteria": "Preserve newsletter signup and give the email input a meaningful Email address accessible name supported by source HTML. Do not claim runtime keyboard or screen reader certification.",
+    "deadline": 1791613875,
     "history": [
+      {
+        "action": "SUBMIT_REJECTED",
+        "page_hash": "e22a38c8a2cdf236b7bc992fb292e618a588ad49fb60300ef0e6bc6f574aa508",
+        "reason": "Evidence unavailable or digest mismatch; no candidate installed.",
+        "report_hash": "5ef87e1f74e73b1d31922f96474ee6713f07c525c9b285b64c0ba379d3e15024",
+        "time": 1791527637,
+        "verdict": "INVALID_EVIDENCE"
+      },
+      {
+        "action": "SUBMIT",
+        "counter_hash": "",
+        "page_hash": "e22a38c8a2cdf236b7bc992fb292e618a588ad49fb60300ef0e6bc6f574aa508",
+        "reason": "The repair HTML does not contain the newsletter signup form, the email input, or any label element. Instead, it replaces the form with an iframe pointing to 'https://fixture.example/email-form' — an external resource whose source is not provided and cannot be inspected. The report claims a label with for='email' was added matching input id='email', but no such markup exists in the repair HTML. The original form feature (email input + Register button) has been removed from the inspectable source and delegated to an opaque iframe. This constitutes removal of the affected feature from verifiable HTML. The barrier therefore cannot be confirmed as resolved from the available evidence.",
+        "report_hash": "5ef87e1f74e73b1d31922f96474ee6713f07c525c9b285b64c0ba379d3e15024",
+        "time": 1791527784,
+        "verdict": "NOT_RESOLVED"
+      },
       {
         "action": "SUBMIT",
         "counter_hash": "",
         "page_hash": "fb587f937b647c93ea74a070e273a9328a073f5660f9a2bd63655dde01e6b3c5",
-        "reason": "Baseline HTML shows the barrier: the signup form contains `<input id=\"email\" type=\"email\" placeholder=\"Enter email\">` and a `Register` button, but no `<label>` associated with the input. Repair HTML preserves the same feature/context: workshop signup text, form, `input id=\"email\"`, and `Register` button remain. It adds a visible descriptive label `<label for=\"email\">Email address</label>` immediately before the same input. The label’s `for=\"email\"` matches the input `id=\"email\"`, satisfying the requested source-HTML association.",
+        "reason": "Baseline HTML had an email input (id='email') with no associated label—only a placeholder. Repair HTML adds <label for='email'>Email address</label> whose 'for' attribute matches the input's id='email', providing an explicit, programmatically associated accessible name via source HTML. The same newsletter signup form, email input, and Register button are all preserved. The report makes no runtime screen reader or keyboard claims, consistent with criteria. Counter evidence is empty. The barrier is meaningfully resolved in source HTML.",
         "report_hash": "5ef87e1f74e73b1d31922f96474ee6713f07c525c9b285b64c0ba379d3e15024",
-        "time": 1791308707,
+        "time": 1791528053,
         "verdict": "RESOLVED"
       }
     ],
     "id": 0,
     "payment": {
       "amount_wei": "1000000000000000000",
-      "recipient": "0x9eaE58063D16EC78cF2E5875AD5B31382795284b",
-      "time": 1791309016,
+      "recipient": "0x1f8F31Cd3eD7e1911E045409AbC034227634A680",
+      "time": 1791528374,
       "type": "REWARD"
+    },
+    "repair_url": "https://raw.githubusercontent.com/haris4587/AccessPatch/main/public/fixtures/recovery-page.html",
+    "reward_wei": "1000000000000000000",
+    "sponsor": "0x379aa6A94a159190652ec1cFf43B299F0AbCcbB8",
+    "status": "PAID",
+    "title": "Synthetic adversarial recovery and payout · 1 GEN"
+  },
+  "recovery_bounty": {
+    "attempts": 1,
+    "barrier": "The signup form needs actual screen-reader announcement and runtime keyboard navigation verified.",
+    "baseline_hash": "129d807e74f4d3f9682ec23b511ddf7c037b959c7b6d558f42c5248cf6462430",
+    "baseline_url": "https://raw.githubusercontent.com/haris4587/AccessPatch/b885358d4e9822c80cd0f2f08a4263cd85069d1d/public/fixtures/before.html",
+    "candidate": null,
+    "challenge_seconds": 30,
+    "criteria": "Demonstrate actual screen-reader output and runtime keyboard navigation of the retained email input. Source HTML alone must not be treated as proof of these runtime behaviors.",
+    "deadline": 1791528561,
+    "history": [
+      {
+        "action": "SUBMIT",
+        "counter_hash": "",
+        "page_hash": "fb587f937b647c93ea74a070e273a9328a073f5660f9a2bd63655dde01e6b3c5",
+        "reason": "The barrier and criteria explicitly require demonstration of actual screen-reader announcement and runtime keyboard navigation — behaviors that cannot be proven from static HTML alone. The repair HTML does add a programmatically associated label (<label for=\"email\">Email address</label> matching input id=\"email\"), which is a meaningful structural improvement over the baseline's label-less placeholder-only input. The report also honestly scopes its claim to source HTML label association only, making no runtime claims. However, the stated criteria demand verified runtime screen-reader output and keyboard navigation evidence, which neither the HTML nor the report provides. Per the assessment rules, runtime behavior is unobservable from markup alone, so a RESOLVED verdict is not warranted. The feature is retained and the HTML fix is real, but the specific evidentiary bar set by the criteria ",
+        "report_hash": "5ef87e1f74e73b1d31922f96474ee6713f07c525c9b285b64c0ba379d3e15024",
+        "time": 1791528409,
+        "verdict": "INCONCLUSIVE"
+      },
+      {
+        "action": "REOPEN",
+        "reason": "Unresolved candidate released; its commitment remains consumed.",
+        "time": 1791528527,
+        "verdict": "OPEN"
+      }
+    ],
+    "id": 1,
+    "payment": {
+      "amount_wei": "1000000000000000000",
+      "recipient": "0x379aa6A94a159190652ec1cFf43B299F0AbCcbB8",
+      "time": 1791528848,
+      "type": "REFUND"
     },
     "repair_url": "https://raw.githubusercontent.com/haris4587/AccessPatch/b885358d4e9822c80cd0f2f08a4263cd85069d1d/public/fixtures/after.html",
     "reward_wei": "1000000000000000000",
-    "sponsor": "0x9a02948698c132F153FaeEF0472B784F52Ecbec8",
-    "status": "PAID",
-    "title": "Fixer-bound live test: email label · 1 GEN"
+    "sponsor": "0x379aa6A94a159190652ec1cFf43B299F0AbCcbB8",
+    "status": "REFUNDED",
+    "title": "Synthetic runtime uncertainty recovery · 1 GEN"
+  },
+  "reviewed_evidence": {
+    "baseline": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><title>AccessPatch synthetic before fixture</title></head><body><main><h1>Community workshop signup</h1><p>Register for the free HTML accessibility workshop.</p><form><input id=\"email\" type=\"email\" placeholder=\"Enter email\"><button type=\"submit\">Register</button></form><p>This is a synthetic AccessPatch test fixture. The email field has no programmatically associated label.</p></main></body></html>\n",
+    "page": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><title>AccessPatch synthetic repaired fixture</title></head><body><main><h1>Community workshop signup</h1><p>Register for the free HTML accessibility workshop.</p><form><label for=\"email\">Email address</label><input id=\"email\" type=\"email\" placeholder=\"Enter email\" autocomplete=\"email\"><button type=\"submit\">Register</button></form><p>This is a synthetic AccessPatch test fixture. The same email field now has an explicit visible label associated by matching for and id.</p></main></body></html>\n",
+    "report": "AccessPatch synthetic repair evidence\nBarrier: the workshop signup email input had only a placeholder, without an associated label.\nRepair: added the visible label Email address with for=\"email\" matching the existing input id=\"email\". The same signup form, email input and Register button remain.\nScope: source HTML label association only. No claim of runtime screen-reader or keyboard testing, computed contrast or overall WCAG certification.\nReproduce: fetch the before and after pages, compare label for and input id.\n",
+    "counter": null
+  },
+  "checkpoints": [
+    {
+      "name": "invalid-rejected",
+      "observed_at": "2026-10-09T06:36:56.656Z",
+      "contract": "0x8acED57B7f0875A67D5A4CC56De48105949d7405",
+      "finalized_bounty": {
+        "attempts": 0,
+        "barrier": "The newsletter signup email input has no meaningful accessible name.",
+        "baseline_hash": "129d807e74f4d3f9682ec23b511ddf7c037b959c7b6d558f42c5248cf6462430",
+        "baseline_url": "https://raw.githubusercontent.com/haris4587/AccessPatch/b885358d4e9822c80cd0f2f08a4263cd85069d1d/public/fixtures/before.html",
+        "candidate": null,
+        "challenge_seconds": 300,
+        "criteria": "Preserve newsletter signup and give the email input a meaningful Email address accessible name supported by source HTML. Do not claim runtime keyboard or screen reader certification.",
+        "deadline": 1791613875,
+        "history": [
+          {
+            "action": "SUBMIT_REJECTED",
+            "page_hash": "e22a38c8a2cdf236b7bc992fb292e618a588ad49fb60300ef0e6bc6f574aa508",
+            "reason": "Evidence unavailable or digest mismatch; no candidate installed.",
+            "report_hash": "5ef87e1f74e73b1d31922f96474ee6713f07c525c9b285b64c0ba379d3e15024",
+            "time": 1791527637,
+            "verdict": "INVALID_EVIDENCE"
+          }
+        ],
+        "id": 0,
+        "payment": null,
+        "repair_url": "https://raw.githubusercontent.com/haris4587/AccessPatch/main/public/fixtures/recovery-page.html",
+        "reward_wei": "1000000000000000000",
+        "sponsor": "0x379aa6A94a159190652ec1cFf43B299F0AbCcbB8",
+        "status": "OPEN",
+        "title": "Synthetic adversarial recovery and payout · 1 GEN"
+      }
+    },
+    {
+      "name": "unresolved-reviewed",
+      "observed_at": "2026-10-09T06:39:00.891Z",
+      "contract": "0x8acED57B7f0875A67D5A4CC56De48105949d7405",
+      "finalized_bounty": {
+        "attempts": 1,
+        "barrier": "The newsletter signup email input has no meaningful accessible name.",
+        "baseline_hash": "129d807e74f4d3f9682ec23b511ddf7c037b959c7b6d558f42c5248cf6462430",
+        "baseline_url": "https://raw.githubusercontent.com/haris4587/AccessPatch/b885358d4e9822c80cd0f2f08a4263cd85069d1d/public/fixtures/before.html",
+        "candidate": null,
+        "challenge_seconds": 300,
+        "criteria": "Preserve newsletter signup and give the email input a meaningful Email address accessible name supported by source HTML. Do not claim runtime keyboard or screen reader certification.",
+        "deadline": 1791613875,
+        "history": [
+          {
+            "action": "SUBMIT_REJECTED",
+            "page_hash": "e22a38c8a2cdf236b7bc992fb292e618a588ad49fb60300ef0e6bc6f574aa508",
+            "reason": "Evidence unavailable or digest mismatch; no candidate installed.",
+            "report_hash": "5ef87e1f74e73b1d31922f96474ee6713f07c525c9b285b64c0ba379d3e15024",
+            "time": 1791527637,
+            "verdict": "INVALID_EVIDENCE"
+          },
+          {
+            "action": "SUBMIT",
+            "counter_hash": "",
+            "page_hash": "e22a38c8a2cdf236b7bc992fb292e618a588ad49fb60300ef0e6bc6f574aa508",
+            "reason": "The repair HTML does not contain the newsletter signup form, the email input, or any label element. Instead, it replaces the form with an iframe pointing to 'https://fixture.example/email-form' — an external resource whose source is not provided and cannot be inspected. The report claims a label with for='email' was added matching input id='email', but no such markup exists in the repair HTML. The original form feature (email input + Register button) has been removed from the inspectable source and delegated to an opaque iframe. This constitutes removal of the affected feature from verifiable HTML. The barrier therefore cannot be confirmed as resolved from the available evidence.",
+            "report_hash": "5ef87e1f74e73b1d31922f96474ee6713f07c525c9b285b64c0ba379d3e15024",
+            "time": 1791527784,
+            "verdict": "NOT_RESOLVED"
+          }
+        ],
+        "id": 0,
+        "payment": null,
+        "repair_url": "https://raw.githubusercontent.com/haris4587/AccessPatch/main/public/fixtures/recovery-page.html",
+        "reward_wei": "1000000000000000000",
+        "sponsor": "0x379aa6A94a159190652ec1cFf43B299F0AbCcbB8",
+        "status": "OPEN",
+        "title": "Synthetic adversarial recovery and payout · 1 GEN"
+      }
+    },
+    {
+      "name": "runtime-inconclusive",
+      "observed_at": "2026-10-09T06:48:13.250Z",
+      "contract": "0x8acED57B7f0875A67D5A4CC56De48105949d7405",
+      "finalized_bounty": {
+        "attempts": 1,
+        "barrier": "The signup form needs actual screen-reader announcement and runtime keyboard navigation verified.",
+        "baseline_hash": "129d807e74f4d3f9682ec23b511ddf7c037b959c7b6d558f42c5248cf6462430",
+        "baseline_url": "https://raw.githubusercontent.com/haris4587/AccessPatch/b885358d4e9822c80cd0f2f08a4263cd85069d1d/public/fixtures/before.html",
+        "candidate": {
+          "challenge_used": false,
+          "commitment_hash": "e55d0bae4062445b9dc73e0c7293815989aeb86d2abd1d4b094c26c1a679205e",
+          "committed_at": 1791528332,
+          "counter": null,
+          "fixer": "0xc4763A67FE91382401Fda530B29398D47F643585",
+          "page_hash": "fb587f937b647c93ea74a070e273a9328a073f5660f9a2bd63655dde01e6b3c5",
+          "report_hash": "5ef87e1f74e73b1d31922f96474ee6713f07c525c9b285b64c0ba379d3e15024",
+          "report_url": "https://raw.githubusercontent.com/haris4587/AccessPatch/b885358d4e9822c80cd0f2f08a4263cd85069d1d/public/fixtures/report.txt",
+          "retries": 0,
+          "settle_after": 1791528439
+        },
+        "challenge_seconds": 30,
+        "criteria": "Demonstrate actual screen-reader output and runtime keyboard navigation of the retained email input. Source HTML alone must not be treated as proof of these runtime behaviors.",
+        "deadline": 1791528561,
+        "history": [
+          {
+            "action": "SUBMIT",
+            "counter_hash": "",
+            "page_hash": "fb587f937b647c93ea74a070e273a9328a073f5660f9a2bd63655dde01e6b3c5",
+            "reason": "The barrier and criteria explicitly require demonstration of actual screen-reader announcement and runtime keyboard navigation — behaviors that cannot be proven from static HTML alone. The repair HTML does add a programmatically associated label (<label for=\"email\">Email address</label> matching input id=\"email\"), which is a meaningful structural improvement over the baseline's label-less placeholder-only input. The report also honestly scopes its claim to source HTML label association only, making no runtime claims. However, the stated criteria demand verified runtime screen-reader output and keyboard navigation evidence, which neither the HTML nor the report provides. Per the assessment rules, runtime behavior is unobservable from markup alone, so a RESOLVED verdict is not warranted. The feature is retained and the HTML fix is real, but the specific evidentiary bar set by the criteria ",
+            "report_hash": "5ef87e1f74e73b1d31922f96474ee6713f07c525c9b285b64c0ba379d3e15024",
+            "time": 1791528409,
+            "verdict": "INCONCLUSIVE"
+          }
+        ],
+        "id": 1,
+        "payment": null,
+        "repair_url": "https://raw.githubusercontent.com/haris4587/AccessPatch/b885358d4e9822c80cd0f2f08a4263cd85069d1d/public/fixtures/after.html",
+        "reward_wei": "1000000000000000000",
+        "sponsor": "0x379aa6A94a159190652ec1cFf43B299F0AbCcbB8",
+        "status": "INCONCLUSIVE",
+        "title": "Synthetic runtime uncertainty recovery · 1 GEN"
+      }
+    },
+    {
+      "name": "runtime-reopened",
+      "observed_at": "2026-10-09T06:53:22.087Z",
+      "contract": "0x8acED57B7f0875A67D5A4CC56De48105949d7405",
+      "finalized_bounty": {
+        "attempts": 1,
+        "barrier": "The signup form needs actual screen-reader announcement and runtime keyboard navigation verified.",
+        "baseline_hash": "129d807e74f4d3f9682ec23b511ddf7c037b959c7b6d558f42c5248cf6462430",
+        "baseline_url": "https://raw.githubusercontent.com/haris4587/AccessPatch/b885358d4e9822c80cd0f2f08a4263cd85069d1d/public/fixtures/before.html",
+        "candidate": null,
+        "challenge_seconds": 30,
+        "criteria": "Demonstrate actual screen-reader output and runtime keyboard navigation of the retained email input. Source HTML alone must not be treated as proof of these runtime behaviors.",
+        "deadline": 1791528561,
+        "history": [
+          {
+            "action": "SUBMIT",
+            "counter_hash": "",
+            "page_hash": "fb587f937b647c93ea74a070e273a9328a073f5660f9a2bd63655dde01e6b3c5",
+            "reason": "The barrier and criteria explicitly require demonstration of actual screen-reader announcement and runtime keyboard navigation — behaviors that cannot be proven from static HTML alone. The repair HTML does add a programmatically associated label (<label for=\"email\">Email address</label> matching input id=\"email\"), which is a meaningful structural improvement over the baseline's label-less placeholder-only input. The report also honestly scopes its claim to source HTML label association only, making no runtime claims. However, the stated criteria demand verified runtime screen-reader output and keyboard navigation evidence, which neither the HTML nor the report provides. Per the assessment rules, runtime behavior is unobservable from markup alone, so a RESOLVED verdict is not warranted. The feature is retained and the HTML fix is real, but the specific evidentiary bar set by the criteria ",
+            "report_hash": "5ef87e1f74e73b1d31922f96474ee6713f07c525c9b285b64c0ba379d3e15024",
+            "time": 1791528409,
+            "verdict": "INCONCLUSIVE"
+          },
+          {
+            "action": "REOPEN",
+            "reason": "Unresolved candidate released; its commitment remains consumed.",
+            "time": 1791528527,
+            "verdict": "OPEN"
+          }
+        ],
+        "id": 1,
+        "payment": null,
+        "repair_url": "https://raw.githubusercontent.com/haris4587/AccessPatch/b885358d4e9822c80cd0f2f08a4263cd85069d1d/public/fixtures/after.html",
+        "reward_wei": "1000000000000000000",
+        "sponsor": "0x379aa6A94a159190652ec1cFf43B299F0AbCcbB8",
+        "status": "OPEN",
+        "title": "Synthetic runtime uncertainty recovery · 1 GEN"
+      }
+    }
+  ],
+  "sponsor_mutation": {
+    "url": "https://raw.githubusercontent.com/haris4587/AccessPatch/main/public/fixtures/recovery-page.html",
+    "current_text": "<!doctype html><html lang=\"en\"><title>Synthetic sponsor mutation</title><body><p>Sponsor-controlled test URL changed after the repair was approved. The approved email form and its label have been removed here. AccessPatch must pay using the immutable reviewed snapshot.</p></body></html>\n",
+    "current_sha256": "880661c9514a39ac8a74716220a7d9a94f93ece984dfd71279fcfd25a0b2aaa9",
+    "approved_sha256": "fb587f937b647c93ea74a070e273a9328a073f5660f9a2bd63655dde01e6b3c5",
+    "github_commits": {
+      "initial": "f8fca579c2a4aadb63fe14a96ae590bcf5260bb6",
+      "legitimate_repair": "117baf041e4a15c6f145a4ba01932157468264e1",
+      "sponsor_mutation": "d4933146e50adc28fc99f24b54664ad6c3897621"
+    }
   },
   "contract_balance_wei": "0"
 }
