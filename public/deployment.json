@@ -2,49 +2,79 @@
   "network": "studionet",
   "chain_id": 61999,
   "rpc": "https://studio.genlayer.com/api",
-  "contract": "0x02b7Cbe3D96495bE8B9686e20ab9F1642FC12855",
-  "studio_account": "0x9a02948698c132F153FaeEF0472B784F52Ecbec8",
+  "contract": "0x8acED57B7f0875A67D5A4CC56De48105949d7405",
+  "studio_account": "0x379aa6A94a159190652ec1cFf43B299F0AbCcbB8",
   "transactions": [
     {
       "action": "deploy",
-      "hash": "0x71f32ba235d790edf53f2024a8ba08c1da826a3b4e00d86e4b136b5a7eab872c",
-      "status": "FINALIZED"
+      "hash": "0xff7dbce42e56542b955e9e3fd9baf239817ea0e64b60ed6129c76e4095534dc1"
     },
     {
       "action": "create_bounty",
-      "hash": "0xbfa2a3b2ebd892776505b137f325abb8c4ac14a34e7ecbfc80d6b8aaeac3a8ff",
-      "status": "FINALIZED"
+      "hash": "0x5b9fdeeae91a92f682932631f1413884a68a537c00434d44d0886dd50355f884"
     },
     {
-      "action": "commit_repair",
-      "hash": "0xe65a6f49a2979adb99141ea6e4a1760f46a3e361489830128d0a3b7175303b83",
-      "status": "FINALIZED"
+      "action": "invalid_commit",
+      "hash": "0x060c4ddee9522b295e8d59972958130509bdcbd7c9e97566a2cb0c3dee849275"
     },
     {
-      "action": "copy_commitment",
-      "hash": "0xe8856c4fe679b61e991ea829dc06f246b3ecdf052ef230af2c743613641effbe",
-      "status": "FINALIZED"
+      "action": "invalid_reveal",
+      "hash": "0x0860d8782f27a6d949b6b537bc27a4dc8618fed79184cf994b195a9eeafb71ae"
     },
     {
-      "action": "copied_reveal",
-      "hash": "0x1152bda69ccfaf9f02855f2577fd584ff82b6652e31686b985719f2ec698bce0",
-      "status": "FINALIZED",
-      "expected_execution": "ERROR"
+      "action": "unresolved_commit",
+      "hash": "0x34e1c564b250eaf7553cd2c844df46811d403c17cc2c624aac42cf68b231852f"
     },
     {
-      "action": "submit_repair",
-      "hash": "0x9a3c3147c973f293a44b22a95153192e83143cdf37c495337b22172c840c5229",
-      "status": "FINALIZED"
+      "action": "legitimate_commit",
+      "hash": "0xf681c56737736838e0378f6c3dbdb072c76c6887814cd497fd7ad4aa757d615c"
+    },
+    {
+      "action": "unresolved_reveal",
+      "hash": "0xd91c4f1f8461f9a6c81ebdf4bc6076345b9f40217f3c0a3beaf74032a7d2bdea"
+    },
+    {
+      "action": "legitimate_reveal",
+      "hash": "0x11525018266de5d0a470e576de9056c5dbd568ebe17097affc8b5f66ee99c711"
+    },
+    {
+      "action": "recovery_create",
+      "hash": "0xf2d1b3816a590be05dd5c88474838d5d040e2cf8d805061ffee35d8c0d9755f1"
+    },
+    {
+      "action": "recovery_commit",
+      "hash": "0xd6b9dab5c225032796838ecdbafacbc6503b6091741e3f57491ae858c9670aad"
     },
     {
       "action": "settle",
-      "hash": "0xfbda11fa836508999e1ec029f4352f2b3cbb41c0ccb12bb774d88c29111e7161",
-      "status": "FINALIZED"
+      "hash": "0x1db49f53a167bcf4927bc2d8701c889ffa87179d9f072491a803c07e349985cb"
+    },
+    {
+      "action": "premature_recovery_commit",
+      "hash": "0x061832689d4ad204db0082b0fc190f7b94f6e3cd20700009e92de71c57b2b550",
+      "expected_execution": "ERROR"
+    },
+    {
+      "action": "recovery_reveal",
+      "hash": "0x202faaf7e5584c5e3eac0fca27ad9adc13662ef76a4f5cefeda2f0384b23a115"
+    },
+    {
+      "action": "reopen_bounty",
+      "hash": "0x4068da6fce2037afdd2c4f185d20dfb606c7ced904d1b3f7d3b4cc785bf50570"
+    },
+    {
+      "action": "recovery_refund",
+      "hash": "0x79c1703bdf5ec0fe6617b8d7bd237001c3851bca1fcea90df2ab501e069235af"
     }
   ],
-  "release": "fixer-bound-v2",
-  "previous_contract": "0x52a73B7209e03dDa55296dEd56Fb3579aCa273a8",
-  "fixer": "0x9eaE58063D16EC78cF2E5875AD5B31382795284b",
-  "copying_attacker": "0x43662bAA88Fe460e22BfDbCFd3F7E723982041A1",
-  "payout_transaction": "0xb4b3ed4ff8f4a8bb938b0d3c4cc8d149e9db76f7de2ab58e3fe0e17f8f385b9e"
+  "release": "v3",
+  "previous_contract": "0x02b7Cbe3D96495bE8B9686e20ab9F1642FC12855",
+  "fixer": "0x1f8F31Cd3eD7e1911E045409AbC034227634A680",
+  "payout_transaction": "0x96c44e0aaa75edccd63443b143187664e7f80297e619c067384034e61205cc93",
+  "adversarial_attacker": "0xc4763A67FE91382401Fda530B29398D47F643585",
+  "fixture_mutation_commits": {
+    "initial": "f8fca579c2a4aadb63fe14a96ae590bcf5260bb6",
+    "legitimate_repair": "117baf041e4a15c6f145a4ba01932157468264e1",
+    "sponsor_mutation": "d4933146e50adc28fc99f24b54664ad6c3897621"
+  }
 }
