@@ -83,7 +83,9 @@ class TestContract(unittest.TestCase):
         self.assertEqual(self.transfers,[('fixer',100)]);self.assertEqual(json.loads(self.c.get_evidence(0)),pinned)
     def test_wrong_digest_rejected_without_slot_or_attempt_consumption(self):
         self.create()
-        with self.assertRaisesRegex(UserError,'no candidate installed'):self.reveal(0,self.report,'0'*64,self.digest(self.report))
+        self.reveal(0,self.report,'0'*64,self.digest(self.report))
+        self.assertEqual(self.state()['history'][-1]['action'],'SUBMIT_REJECTED')
+        self.assertTrue(json.loads(self.c.get_commitment(0,'sponsor'))['revealed'])
         self.assertEqual(self.state()['status'],'OPEN');self.assertIsNone(self.state()['candidate']);self.assertEqual(self.state()['attempts'],0)
         self.submit();self.set_time(self.time+30);self.c.settle(0);self.assertEqual(self.transfers,[('fixer',100)])
     def test_rejected_repair_stays_open(self):
@@ -103,7 +105,8 @@ class TestContract(unittest.TestCase):
         self.create();self.submit();self.gl.message.sender_address='challenger';self.verdict='NOT_RESOLVED';self.c.challenge(0,self.counter,self.digest(self.counter));self.assertEqual(self.state()['status'],'OPEN')
     def test_unavailable_counter_rejected_without_consuming_challenge(self):
         self.create();self.submit();self.gl.message.sender_address='challenger';
-        with self.assertRaises(UserError):self.c.challenge(0,self.counter,'0'*64)
+        self.c.challenge(0,self.counter,'0'*64)
+        self.assertEqual(self.state()['history'][-1]['action'],'CHALLENGE_REJECTED')
         self.assertEqual(self.state()['status'],'REVIEW')
         self.assertFalse(self.state()['candidate']['challenge_used'])
     def test_refund_permission_deadline_exactly_once(self):
@@ -169,8 +172,8 @@ class TestContract(unittest.TestCase):
     def test_failed_replacement_preserves_prior_unresolved_candidate(self):
         self.create();self.verdict='INCONCLUSIVE';self.submit();before=self.state()
         self.gl.message.sender_address='other'
-        with self.assertRaises(UserError):self.reveal(0,self.report,'0'*64,self.digest(self.report))
-        self.assertEqual(self.state(),before)
+        self.reveal(0,self.report,'0'*64,self.digest(self.report))
+        after=self.state();self.assertEqual(after['candidate'],before['candidate']);self.assertEqual(after['status'],before['status']);self.assertEqual(after['attempts'],before['attempts'])
 
     def test_only_candidate_fixer_can_consume_retries(self):
         self.create();self.verdict='INCONCLUSIVE';self.submit();self.gl.message.sender_address='attacker'
@@ -251,5 +254,32 @@ class TestContract(unittest.TestCase):
         self.c.commit_repair(0,digest);self.set_time(1059);self.c.commit_repair(0,digest);self.set_time(1060)
         with self.assertRaisesRegex(UserError,'Wait 60'):self.c.submit_repair(0,*args[2:])
         self.assertEqual(json.loads(self.c.get_commitment(0,'fixer'))['sequence'],2)
+
+    def test_invalid_commitment_is_consumed_without_candidate_and_cannot_replay(self):
+        self.create();self.gl.message.sender_address='attacker'
+        args=(0,self.report,'0'*64,self.digest(self.report),'f'*64)
+        self.reveal(0,*args[1:])
+        self.assertEqual(self.state()['history'][-1]['verdict'],'INVALID_EVIDENCE')
+        self.assertIsNone(self.state()['candidate']);self.assertEqual(self.state()['attempts'],0)
+        with self.assertRaisesRegex(UserError,'already revealed'):self.c.submit_repair(*args)
+        self.assertEqual(self.transfers,[])
+
+    def test_consensus_failure_during_replacement_preserves_previous_state(self):
+        self.create();self.verdict='INCONCLUSIVE';self.submit();before=self.state()
+        self.gl.message.sender_address='other';args=(0,self.report,self.digest(self.after),self.digest(self.report),'f'*64)
+        self.c.commit_repair(0,self.c._repair_commitment(0,'other',*args[1:]));self.set_time(self.time+60)
+        def disagree(task,validate):raise UserError('Validator disagreement')
+        self.gl.vm.run_nondet_unsafe=disagree
+        with self.assertRaisesRegex(UserError,'Validator disagreement'):self.c.submit_repair(*args)
+        self.assertEqual(self.state(),before)
+        self.assertFalse(json.loads(self.c.get_commitment(0,'other'))['revealed'])
+
+    def test_malformed_assessor_response_can_be_reopened_and_settled(self):
+        self.create();self.gl.nondet.exec_prompt=lambda *a,**k:'invalid JSON';self.submit()
+        self.assertEqual(self.state()['status'],'INCONCLUSIVE')
+        self.gl.message.sender_address='other';self.c.reopen_bounty(0)
+        self.gl.nondet.exec_prompt=lambda *a,**k:json.dumps({'verdict':'RESOLVED','reason':'Label associated with retained email input'})
+        self.submit();self.set_time(self.time+30);self.c.settle(0)
+        self.assertEqual(self.transfers,[('fixer',100)])
 
 if __name__=='__main__':unittest.main()
