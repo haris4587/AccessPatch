@@ -87,7 +87,7 @@ async function execute(name,args,value){
  const consensus=receipt.result_name??receipt.resultName;
  const leader=receipt.consensus_data?.leader_receipt?.[0];
  if((consensus && !['MAJORITY_AGREE','SUCCESS'].includes(consensus)) || (leader?.execution_result && leader.execution_result!=='SUCCESS'))throw Error('Transaction failed; inspect '+tx+' in Studio.');
- say('Finalized transaction: '+tx);await refresh();return true;
+ say('Finalized transaction: '+tx);await refresh();if(name==='submit_repair' && selected?.history.at(-1)?.action==='SUBMIT_REJECTED')say('Evidence rejected without reserving a candidate. Correct the URL/digests and make a fresh commitment. Transaction: '+tx);return true;
  }catch(e){say('Transaction did not complete: '+e.message);return false;}finally{busy=false;document.querySelectorAll('button').forEach(b=>b.disabled=false);}
 }
 $('#refresh').onclick=refresh;$('#filter').onchange=board;$('#prev').onclick=()=>{offset=Math.max(0,offset-10);refresh();};$('#next').onclick=()=>{offset+=10;refresh();};
