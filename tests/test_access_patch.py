@@ -73,10 +73,19 @@ class TestContract(unittest.TestCase):
         with self.assertRaises(UserError):self.create()
         self.gl.message.value=100
         with self.assertRaises(UserError):self.c.create_bounty('Email repair',self.baseline,self.after,'Barrier exists','Criteria exist',60,0)
-    def test_changed_page_cannot_pay(self):
-        self.create();self.submit();self.pages[self.after]=Response('Changed!');self.set_time(self.time+31);self.c.settle(0);self.assertEqual(self.state()['status'],'INCONCLUSIVE');self.assertEqual(self.transfers,[])
-    def test_wrong_digest_is_inconclusive_and_validators_fetch_independently(self):
-        self.create();self.reveal(0,self.report,'0'*64,self.digest(self.report));self.assertEqual(self.state()['status'],'INCONCLUSIVE');self.assertEqual(self.fetches.count(self.after),2)
+    def test_sponsor_changes_cannot_veto_accepted_payment(self):
+        self.create();self.submit();pinned=json.loads(self.c.get_evidence(0))
+        self.pages[self.baseline]=Response('Changed baseline');self.pages[self.after]=Response('Changed!');del self.pages[self.report]
+        self.set_time(7001);self.gl.message.sender_address='sponsor'
+        with self.assertRaises(UserError):self.c.refund(0)
+        count=len(self.fetches);self.c.settle(0)
+        self.assertEqual(len(self.fetches),count);self.assertEqual(self.state()['status'],'PAID')
+        self.assertEqual(self.transfers,[('fixer',100)]);self.assertEqual(json.loads(self.c.get_evidence(0)),pinned)
+    def test_wrong_digest_rejected_without_slot_or_attempt_consumption(self):
+        self.create()
+        with self.assertRaisesRegex(UserError,'no candidate installed'):self.reveal(0,self.report,'0'*64,self.digest(self.report))
+        self.assertEqual(self.state()['status'],'OPEN');self.assertIsNone(self.state()['candidate']);self.assertEqual(self.state()['attempts'],0)
+        self.submit();self.set_time(self.time+30);self.c.settle(0);self.assertEqual(self.transfers,[('fixer',100)])
     def test_rejected_repair_stays_open(self):
         self.create();self.verdict='NOT_RESOLVED';self.submit();self.assertEqual(self.state()['status'],'OPEN');self.assertIsNone(self.state()['candidate']);self.assertEqual(self.transfers,[])
     def test_no_early_settlement_or_submission_after_deadline(self):
@@ -109,10 +118,74 @@ class TestContract(unittest.TestCase):
         for _ in range(3):self.c.retry_review(0)
         with self.assertRaises(UserError):self.c.retry_review(0)
         self.gl.message.sender_address='sponsor';self.set_time(7000);self.c.refund(0);self.assertEqual(self.state()['status'],'REFUNDED')
-    def test_submission_cap(self):
-        self.create();self.verdict='NOT_RESOLVED'
-        for _ in range(10):self.submit()
-        with self.assertRaises(UserError):self.submit()
+    def test_attacker_cannot_exhaust_other_fixers_submission_capacity(self):
+        self.create();self.verdict='NOT_RESOLVED';self.gl.message.sender_address='attacker'
+        for _ in range(10):self.reveal(0,self.report,self.digest(self.after),self.digest(self.report))
+        with self.assertRaisesRegex(UserError,'for this fixer'):self.reveal(0,self.report,self.digest(self.after),self.digest(self.report))
+        self.verdict='RESOLVED';self.submit();self.set_time(self.time+30);self.c.settle(0)
+        self.assertEqual(self.state()['attempts'],11);self.assertEqual(self.transfers,[('fixer',100)])
+
+    def test_permissionless_reopen_after_retry_exhaustion_then_legitimate_payout(self):
+        self.create();self.verdict='INCONCLUSIVE';self.gl.message.sender_address='attacker'
+        self.reveal(0,self.report,self.digest(self.after),self.digest(self.report))
+        for _ in range(3):self.c.retry_review(0)
+        with self.assertRaises(UserError):self.c.retry_review(0)
+        self.gl.message.sender_address='unrelated';self.c.reopen_bounty(0)
+        self.assertEqual(self.state()['status'],'OPEN');self.assertIsNone(self.state()['candidate'])
+        self.assertTrue(json.loads(self.c.get_commitment(0,'attacker'))['revealed'])
+        self.verdict='RESOLVED';self.submit();self.set_time(self.time+30);self.c.settle(0)
+        self.assertEqual(self.transfers,[('fixer',100)])
+
+    def test_unresolved_slot_can_be_replaced_without_attacker_or_sponsor_consent(self):
+        self.create();self.verdict='INCONCLUSIVE';self.gl.message.sender_address='attacker'
+        self.reveal(0,self.report,self.digest(self.after),self.digest(self.report))
+        self.verdict='RESOLVED';self.submit()
+        self.assertEqual(self.state()['candidate']['fixer'],'fixer')
+        self.assertEqual([h['action'] for h in self.state()['history']],['SUBMIT','REOPEN','SUBMIT'])
+        self.set_time(self.time+30);self.c.settle(0);self.assertEqual(self.transfers,[('fixer',100)])
+
+    def test_reopen_cannot_erase_resolved_or_paid_candidate(self):
+        self.create();self.submit();self.gl.message.sender_address='attacker'
+        before=self.state()
+        with self.assertRaises(UserError):self.c.reopen_bounty(0)
+        self.assertEqual(self.state(),before)
+        self.set_time(self.time+30);self.c.settle(0)
+        with self.assertRaises(UserError):self.c.reopen_bounty(0)
+        self.assertEqual(self.transfers,[('fixer',100)])
+
+    def test_inconclusive_challenge_cannot_block_payment(self):
+        self.create();self.submit();self.gl.message.sender_address='attacker';self.verdict='INCONCLUSIVE'
+        self.c.challenge(0,self.counter,self.digest(self.counter))
+        self.assertEqual(self.state()['status'],'REVIEW');self.assertTrue(self.state()['candidate']['challenge_used'])
+        self.pages.clear();self.set_time(self.time+30);self.c.settle(0)
+        self.assertEqual(self.transfers,[('fixer',100)])
+
+    def test_challenge_reviews_pinned_sources_even_after_sponsor_deletion(self):
+        self.create();self.submit();self.pages.pop(self.after);self.pages.pop(self.report)
+        self.gl.message.sender_address='challenger';self.c.challenge(0,self.counter,self.digest(self.counter))
+        self.pages.pop(self.counter);self.set_time(self.time+30);self.c.settle(0)
+        self.assertEqual(self.transfers,[('fixer',100)])
+
+    def test_failed_replacement_preserves_prior_unresolved_candidate(self):
+        self.create();self.verdict='INCONCLUSIVE';self.submit();before=self.state()
+        self.gl.message.sender_address='other'
+        with self.assertRaises(UserError):self.reveal(0,self.report,'0'*64,self.digest(self.report))
+        self.assertEqual(self.state(),before)
+
+    def test_only_candidate_fixer_can_consume_retries(self):
+        self.create();self.verdict='INCONCLUSIVE';self.submit();self.gl.message.sender_address='attacker'
+        with self.assertRaisesRegex(UserError,'Only the unresolved fixer'):self.c.retry_review(0)
+        self.assertEqual(self.state()['candidate']['retries'],0)
+        self.c.reopen_bounty(0);self.assertEqual(self.state()['status'],'OPEN')
+
+    def test_reopening_after_deadline_does_not_extend_deadline_or_pay_attacker(self):
+        self.create();self.verdict='INCONCLUSIVE';self.submit();self.set_time(7000)
+        self.gl.message.sender_address='attacker';self.c.reopen_bounty(0)
+        self.assertEqual(self.state()['deadline'],7000)
+        with self.assertRaises(UserError):self.c.commit_repair(0,'a'*64)
+        with self.assertRaises(UserError):self.c.refund(0)
+        self.gl.message.sender_address='sponsor';self.c.refund(0)
+        self.assertEqual(self.transfers,[('sponsor',100)])
     def test_immutable_baseline_allows_updated_original_url(self):
         self.create();self.pages[self.baseline]=Response('Updated live source');self.submit();self.assertEqual(self.state()['baseline_hash'],hashlib.sha256(b'<input id="email">').hexdigest())
     def test_view_pagination_hides_original_html(self):
