@@ -171,7 +171,14 @@ class AccessPatch(gl.Contract):
         def snapshot():
             return {'page': self._fetch(b['repair_url']), 'report': self._fetch(report_url)}
         evidence = gl.eq_principle.strict_eq(snapshot)
-        self._check(evidence['page']['ok'] and evidence['report']['ok'] and evidence['page']['hash'] == page_hash and evidence['report']['hash'] == report_hash, 'Evidence unavailable or digest mismatch; no candidate installed')
+        if not evidence['page']['ok'] or not evidence['report']['ok'] or evidence['page']['hash'] != page_hash or evidence['report']['hash'] != report_hash:
+            # Finalize the consensus result instead of rolling back after nondet work.
+            # Consume only this sender's bad commitment; never install/replace a slot.
+            commitment['revealed'] = True
+            self.commitments[key] = json.dumps(commitment)
+            self._record(b, {'verdict': 'INVALID_EVIDENCE', 'reason': 'Evidence unavailable or digest mismatch; no candidate installed.', 'page_hash': evidence['page']['hash'], 'report_hash': evidence['report']['hash']}, 'SUBMIT_REJECTED')
+            self._save(bounty_id, b)
+            return
         candidate['page_snapshot'] = evidence['page']['text']
         candidate['report_snapshot'] = evidence['report']['text']
         if b['status'] == 'INCONCLUSIVE':
@@ -197,7 +204,10 @@ class AccessPatch(gl.Contract):
         self._url(evidence_url)
         self._check(len(evidence_hash) == 64 and all(x in '0123456789abcdef' for x in evidence_hash), 'Invalid evidence digest')
         evidence = gl.eq_principle.strict_eq(lambda: self._fetch(evidence_url))
-        self._check(evidence['ok'] and evidence['hash'] == evidence_hash, 'Challenge evidence must be available and match its digest')
+        if not evidence['ok'] or evidence['hash'] != evidence_hash:
+            self._record(b, {'verdict': 'INVALID_EVIDENCE', 'reason': 'Challenge evidence unavailable or digest mismatch; accepted review retained.'}, 'CHALLENGE_REJECTED')
+            self._save(bounty_id, b)
+            return
         c['counter'] = {'url': evidence_url, 'hash': evidence_hash, 'snapshot': evidence['text'], 'challenger': str(gl.message.sender_address)}
         c['challenge_used'] = True
         result = self._judge(b, c, c['counter'])
