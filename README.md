@@ -82,3 +82,14 @@ The October 9 steward regression fixes invalid evidence occupying the sole candi
 Adversarial regressions prove invalid-hash rejection followed by legitimate payout, recovery after three retries, automatic replacement, per-fixer caps after ten malicious attempts, no reopening accepted/paid candidates, no retry consumption by strangers, inconclusive challenges preserving REVIEW, and settlement despite all sponsor URLs being changed/deleted. All use the actual contract source and an explicit SDK double; real GenVM transactions are separate evidence. Commit/reveal caller and domain protections remain intact.
 
 The v3 full-consensus Studio proof uses three separate built-in accounts. Bounty #0 rejects invalid evidence, rejects an unresolved repair without reserving the slot, then pays the legitimate fixer 1 sandbox GEN after the sponsor changes its URL. Bounty #1 independently produces INCONCLUSIVE, is reopened by an unrelated caller, and refunds after the fixed deadline. See `docs/live-test.json`, `docs/recovery-design.md` and `docs/submission.md`. Historical v2 copy-rejection proof remains in `docs/live-test-v2.json`.
+
+## Milestone v1: portable audit workbench
+
+New beyond the accepted October 9 v3 release: a wallet-free browser export/import workbench and reusable Node CLI. Verify exact reviewed snapshot hashes locally, then independently authenticate finalized bounty state and correctly linked credited payments on GenLayer. Offline JSON consistency is explicitly distinct from online authentication. The accepted contract remains the same.
+
+See [milestone delta and reviewer instructions](docs/milestone-v1.md), [new audit tests](tests/audit.test.mjs), and [live read-only verification](docs/milestone-v1-verification.json). There are 32 existing tests and 30 new audit tests (62 total).
+
+```sh
+node scripts/audit-bundle.mjs verify public/audit-example.json
+node scripts/audit-bundle.mjs verify public/audit-example.json --online
+```

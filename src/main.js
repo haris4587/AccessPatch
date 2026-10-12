@@ -1,4 +1,5 @@
 import './style.css';
+import {exportBundle,verifyBundle,verifyOnline,parseBundle,MAX_BUNDLE_BYTES} from './audit.js';
 import {repairCommitment,freshSalt} from './commitment.js';
 import {createClient,createAccount,generatePrivateKey} from 'genlayer-js';
 import {studionet} from 'genlayer-js/chains';
@@ -95,4 +96,69 @@ $('#contract').textContent=deployment.contract?'Studionet contract '+deployment.
 $('#proofLinks').innerHTML=(deployment.contract?safeLink('https://studio.genlayer.com/?import-contract='+deployment.contract,'Open deployed contract in Studio'):'')+safeLink('https://github.com/haris4587/AccessPatch/blob/main/docs/live-test.json','Transaction records & live test')+safeLink('/fixtures/before.html','Synthetic original page')+safeLink('/fixtures/after.html','Synthetic repaired page');
 // Source-level WebMCP read tool. Transactions remain explicit user actions.
 if(navigator.modelContext?.registerTool)navigator.modelContext.registerTool({name:'accesspatch_list_bounties',description:'Read finalized AccessPatch bounties from Studionet.',inputSchema:{type:'object',properties:{}},execute:async()=>({content:[{type:'text',text:JSON.stringify(rows)}]})});
-await refresh();
+
+// Wallet-free audit workbench. No secret keys, salts, or private drafts are exported.
+let auditBundle = null, auditBusy = false;
+const trustedAudit = {chain_id: deployment.chain_id, contract: deployment.contract, source_sha256: deployment.source_sha256};
+function auditState(message, result) {
+ $('#auditStatus').textContent = message;
+ $('#auditResult').textContent = result ? JSON.stringify(result, null, 2) : '';
+}
+function auditControls(working) {
+ auditBusy = working;
+ for (const id of ['auditExport','auditDemo','auditImport']) $('#'+id).disabled = working;
+ $('#auditOnline').disabled = working || !auditBundle;
+}
+function auditSnapshots(bundle) {
+ const root = $('#auditSnapshots');root.replaceChildren();
+ for (const [name,text] of Object.entries(bundle.evidence)) {
+  if(text === null) continue;
+  const heading=document.createElement('h3');heading.textContent=name;
+  const pre=document.createElement('pre');pre.className='auditResult';pre.textContent=text;
+  root.append(heading,pre);
+ }
+}
+async function importAudit(text) {
+ auditBundle=null;$('#auditSnapshots').replaceChildren();
+ const candidate=parseBundle(text);
+ const result=await verifyBundle(candidate,trustedAudit);
+ auditBundle=candidate;auditSnapshots(candidate);
+ auditState('Local consistency checks passed. Online authentication is still required.',result);
+}
+$('#auditImport').onchange=async ev=>{
+ if(auditBusy)return;
+ auditControls(true);
+ try{const file=ev.target.files[0];if(!file) return;if(file.size>MAX_BUNDLE_BYTES)throw Error('Bundle exceeds 500 KB');await importAudit(await file.text());}
+ catch(e){auditBundle=null;auditState('Import rejected: '+e.message);}
+ finally{ev.target.value='';auditControls(false);}
+};
+$('#auditExport').onclick=async()=>{
+ if(auditBusy)return;auditControls(true);
+ try{
+  const raw=$('#auditBounty').value,id=Number(raw);
+  if(!/^[0-9]+$/.test(raw)||!Number.isSafeInteger(id))throw Error('Use a nonnegative integer bounty ID');
+  const tx=$('#auditSettlement').value.trim();
+  auditState('Reading finalized state and reviewed evidence…');
+  const bundle=await exportBundle(client,trustedAudit,id,TransactionHashVariant.LATEST_FINAL,tx||undefined);
+  const result=await verifyOnline(bundle,client,trustedAudit,TransactionHashVariant.LATEST_FINAL);
+  auditBundle=bundle;auditSnapshots(bundle);
+  const url=URL.createObjectURL(new Blob([JSON.stringify(bundle,null,2)+'\n'],{type:'application/json'}));
+  const link=document.createElement('a');link.href=url;link.download='accesspatch-audit-'+id+'.json';link.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
+  auditState('Exported audit bundle. '+result.note,result);
+ }catch(e){auditBundle=null;auditState('Export failed: '+e.message);}
+ finally{auditControls(false);}
+};
+$('#auditDemo').onclick=async()=>{
+ if(auditBusy)return;auditControls(true);
+ try{auditState('Loading a recorded example; online verification is a separate step.');const response=await fetch('/audit-example.json');if(!response.ok)throw Error('Example unavailable');await importAudit(await response.text());}
+ catch(e){auditBundle=null;auditState('Example failed: '+e.message);}
+ finally{auditControls(false);}
+};
+$('#auditOnline').onclick=async()=>{
+ if(auditBusy||!auditBundle)return;auditControls(true);
+ try{auditState('Independently reading GenLayer state, snapshots and transfer receipts…');const result=await verifyOnline(auditBundle,client,trustedAudit,TransactionHashVariant.LATEST_FINAL);auditState(result.note,result);}
+ catch(e){auditState('Online verification failed: '+e.message);}
+ finally{auditControls(false);}
+};
+
+void refresh();

@@ -76,5 +76,6 @@
     "initial": "f8fca579c2a4aadb63fe14a96ae590bcf5260bb6",
     "legitimate_repair": "117baf041e4a15c6f145a4ba01932157468264e1",
     "sponsor_mutation": "d4933146e50adc28fc99f24b54664ad6c3897621"
-  }
+  },
+  "source_sha256": "a97d1934297108628e792fb7396c0108339e623e5158b40020348cd2d0237db8"
 }

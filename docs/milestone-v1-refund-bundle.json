@@ -1,0 +1,75 @@
+{
+  "schema": "accesspatch-audit-v1",
+  "chain_id": 61999,
+  "contract": "0x8acED57B7f0875A67D5A4CC56De48105949d7405",
+  "source_sha256": "a97d1934297108628e792fb7396c0108339e623e5158b40020348cd2d0237db8",
+  "exported_at": "2026-10-12T06:03:34.607Z",
+  "bounty": {
+    "attempts": 1,
+    "barrier": "The signup form needs actual screen-reader announcement and runtime keyboard navigation verified.",
+    "baseline_hash": "129d807e74f4d3f9682ec23b511ddf7c037b959c7b6d558f42c5248cf6462430",
+    "baseline_url": "https://raw.githubusercontent.com/haris4587/AccessPatch/b885358d4e9822c80cd0f2f08a4263cd85069d1d/public/fixtures/before.html",
+    "candidate": null,
+    "challenge_seconds": 30,
+    "criteria": "Demonstrate actual screen-reader output and runtime keyboard navigation of the retained email input. Source HTML alone must not be treated as proof of these runtime behaviors.",
+    "deadline": 1791528561,
+    "history": [
+      {
+        "action": "SUBMIT",
+        "counter_hash": "",
+        "page_hash": "fb587f937b647c93ea74a070e273a9328a073f5660f9a2bd63655dde01e6b3c5",
+        "reason": "The barrier and criteria explicitly require demonstration of actual screen-reader announcement and runtime keyboard navigation — behaviors that cannot be proven from static HTML alone. The repair HTML does add a programmatically associated label (<label for=\"email\">Email address</label> matching input id=\"email\"), which is a meaningful structural improvement over the baseline's label-less placeholder-only input. The report also honestly scopes its claim to source HTML label association only, making no runtime claims. However, the stated criteria demand verified runtime screen-reader output and keyboard navigation evidence, which neither the HTML nor the report provides. Per the assessment rules, runtime behavior is unobservable from markup alone, so a RESOLVED verdict is not warranted. The feature is retained and the HTML fix is real, but the specific evidentiary bar set by the criteria ",
+        "report_hash": "5ef87e1f74e73b1d31922f96474ee6713f07c525c9b285b64c0ba379d3e15024",
+        "time": 1791528409,
+        "verdict": "INCONCLUSIVE"
+      },
+      {
+        "action": "REOPEN",
+        "reason": "Unresolved candidate released; its commitment remains consumed.",
+        "time": 1791528527,
+        "verdict": "OPEN"
+      }
+    ],
+    "id": 1,
+    "payment": {
+      "amount_wei": "1000000000000000000",
+      "recipient": "0x379aa6A94a159190652ec1cFf43B299F0AbCcbB8",
+      "time": 1791528848,
+      "type": "REFUND"
+    },
+    "repair_url": "https://raw.githubusercontent.com/haris4587/AccessPatch/b885358d4e9822c80cd0f2f08a4263cd85069d1d/public/fixtures/after.html",
+    "reward_wei": "1000000000000000000",
+    "sponsor": "0x379aa6A94a159190652ec1cFf43B299F0AbCcbB8",
+    "status": "REFUNDED",
+    "title": "Synthetic runtime uncertainty recovery · 1 GEN"
+  },
+  "evidence": {
+    "baseline": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><title>AccessPatch synthetic before fixture</title></head><body><main><h1>Community workshop signup</h1><p>Register for the free HTML accessibility workshop.</p><form><input id=\"email\" type=\"email\" placeholder=\"Enter email\"><button type=\"submit\">Register</button></form><p>This is a synthetic AccessPatch test fixture. The email field has no programmatically associated label.</p></main></body></html>\n",
+    "page": null,
+    "report": null,
+    "counter": null
+  },
+  "transfers": [
+    {
+      "settlement": {
+        "hash": "0x79c1703bdf5ec0fe6617b8d7bd237001c3851bca1fcea90df2ab501e069235af",
+        "method": "refund",
+        "bounty_id": "1",
+        "status": "FINALIZED",
+        "execution": "SUCCESS",
+        "to": "0x8acED57B7f0875A67D5A4CC56De48105949d7405",
+        "triggered": [
+          "0x1f046a2a7df16fd7656f03a7bd6b5464d32f8d986bfbdb082f98ec4f52429799"
+        ]
+      },
+      "credit": {
+        "hash": "0x1f046a2a7df16fd7656f03a7bd6b5464d32f8d986bfbdb082f98ec4f52429799",
+        "status": "FINALIZED",
+        "from": "0x8acED57B7f0875A67D5A4CC56De48105949d7405",
+        "to": "0x379aa6A94a159190652ec1cFf43B299F0AbCcbB8",
+        "value_wei": "1000000000000000000",
+        "value_credited": true
+      }
+    }
+  ]
+}

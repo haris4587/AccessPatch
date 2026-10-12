@@ -1,0 +1,75 @@
+{
+  "milestone": "v1-portable-audit-workbench",
+  "recorded_at": "2026-10-12T06:03:42.838Z",
+  "accepted_baseline_commit": "d4965c7d8abf17e77eae891bd15a7f778bd1ba52",
+  "contract": "0x8acED57B7f0875A67D5A4CC56De48105949d7405",
+  "chain_id": 61999,
+  "new_contract_deployment": false,
+  "read_only_verification": true,
+  "synthetic_existing_bounties": true,
+  "cases": [
+    {
+      "bounty_id": 0,
+      "settlement": "0x1db49f53a167bcf4927bc2d8701c889ffa87179d9f072491a803c07e349985cb",
+      "result": {
+        "mode": "online",
+        "bounty_id": 0,
+        "status": "PAID",
+        "snapshots": [
+          {
+            "name": "baseline",
+            "expected": "129d807e74f4d3f9682ec23b511ddf7c037b959c7b6d558f42c5248cf6462430",
+            "actual": "129d807e74f4d3f9682ec23b511ddf7c037b959c7b6d558f42c5248cf6462430",
+            "bytes": 461
+          },
+          {
+            "name": "page",
+            "expected": "fb587f937b647c93ea74a070e273a9328a073f5660f9a2bd63655dde01e6b3c5",
+            "actual": "fb587f937b647c93ea74a070e273a9328a073f5660f9a2bd63655dde01e6b3c5",
+            "bytes": 556
+          },
+          {
+            "name": "report",
+            "expected": "5ef87e1f74e73b1d31922f96474ee6713f07c525c9b285b64c0ba379d3e15024",
+            "actual": "5ef87e1f74e73b1d31922f96474ee6713f07c525c9b285b64c0ba379d3e15024",
+            "bytes": 521
+          }
+        ],
+        "transfer_evidence": "internally-consistent",
+        "note": "State, source, snapshots and credited transfer independently rechecked on GenLayer.",
+        "authenticated_state": true,
+        "payment_credited": true
+      }
+    },
+    {
+      "bounty_id": 1,
+      "settlement": "0x79c1703bdf5ec0fe6617b8d7bd237001c3851bca1fcea90df2ab501e069235af",
+      "result": {
+        "mode": "online",
+        "bounty_id": 1,
+        "status": "REFUNDED",
+        "snapshots": [
+          {
+            "name": "baseline",
+            "expected": "129d807e74f4d3f9682ec23b511ddf7c037b959c7b6d558f42c5248cf6462430",
+            "actual": "129d807e74f4d3f9682ec23b511ddf7c037b959c7b6d558f42c5248cf6462430",
+            "bytes": 461
+          }
+        ],
+        "transfer_evidence": "internally-consistent",
+        "note": "State, source, snapshots and credited transfer independently rechecked on GenLayer.",
+        "authenticated_state": true,
+        "payment_credited": true
+      }
+    }
+  ],
+  "tampered_snapshot_rejected": true,
+  "forged_snapshot_and_digest_rejected_online": true,
+  "cross_bounty_receipt_rejected": true,
+  "tests": {
+    "existing": 32,
+    "new_audit": 30,
+    "total": 62
+  },
+  "browser_interaction_qa": "not performed: supported browser-control capability unavailable"
+}
