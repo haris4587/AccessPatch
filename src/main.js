@@ -1,4 +1,6 @@
 import './style.css';
+import {mountCursorRing} from './cursor-ring.ts';
+try { const dispose = mountCursorRing(document.querySelector('.heroRing')); if (dispose) window.addEventListener('pagehide', dispose, {once:true}); } catch { /* Decoration failure leaves all app controls usable. */ }
 import {exportBundle,verifyBundle,verifyOnline,parseBundle,MAX_BUNDLE_BYTES} from './audit.js';
 import {repairCommitment,freshSalt} from './commitment.js';
 import {createClient,createAccount,generatePrivateKey} from 'genlayer-js';
