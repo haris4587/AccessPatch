@@ -9,3 +9,29 @@
 .heroRing{position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.8;background:radial-gradient(ellipse at 63% 50%,#d8e3ff70,transparent 65%);mask-image:linear-gradient(90deg,transparent 22%,#000 60%)}
 .heroRing canvas{display:block;width:100%;height:100%}
 @media(max-width:850px){.intro{padding:24px 18px 28px}.heroRing{mask-image:linear-gradient(180deg,transparent 20%,#000 70%);opacity:.55}}
+
+/* Full-site accessibility/evidence illustration, gently shifted by scrolling. */
+:root{background:#08132f}
+body{position:relative;isolation:isolate;background:transparent;color:#e8efff}
+.siteBackdrop{position:fixed;inset:-80px 0;z-index:-1;pointer-events:none;background:#08132f url('/accesspatch-background.webp') center/cover no-repeat;will-change:transform}
+.siteBackdrop::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,#07112866,#07112840 45%,#07112888),radial-gradient(ellipse at 60% 40%,#3166f51a,transparent 60%);animation:backdropGlow 18s ease-in-out infinite alternate}
+@keyframes backdropGlow{from{opacity:.55}to{opacity:1}}
+header,footer{background:#08152dcc;backdrop-filter:blur(14px);border-color:#98b5ff33;color:#c4d3f2}
+.brand,nav a{color:#edf3ff}
+nav a:hover{color:#9ec6ff}
+.intro{background:#0c1c3bb3;border:1px solid #97b6ff33;box-shadow:0 18px 60px #01071833}
+.intro h1{color:#f3f7ff}
+.intro .eyebrow,.eyebrow{color:#92baff}
+.intro p:not(.eyebrow){color:#c5d5f2}
+.intro .network p{color:#bfceec}
+.heroRing{background:transparent;opacity:.6}
+.toolbar,.filters{color:#e8efff}
+.filters span,#page{color:#c3d3f0}
+.card,aside,.proof,.scope{color:#172440;background:#f4f8fff2;backdrop-filter:blur(12px);box-shadow:0 14px 44px #020a1d30;border:1px solid #ffffff70}
+.card:hover{background:#e5edfff5}
+.proof .eyebrow{color:#1848ed}
+.scope{padding:28px 30px;margin-top:32px;border-radius:10px;max-width:none}
+#bounties>p{background:#0c1c3bcc;padding:20px;border-radius:10px;color:#d5e2fc}
+#notice:empty{background:none}
+@media(prefers-reduced-motion:reduce){.siteBackdrop{transform:none!important;will-change:auto}.siteBackdrop::after{animation:none}}
+@media(max-width:850px){.siteBackdrop{background-position:38% center}.scope{padding:24px 20px}}
