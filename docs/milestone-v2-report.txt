@@ -1,0 +1,117 @@
+{
+  "format": "AccessPatch source repair report v2",
+  "engine": "source-preflight-1",
+  "scope": "Source HTML checks only; not a browser accessibility audit, WCAG certification, proof of runtime behavior, or GenLayer verdict. Names are declared markup, not computed accessible names. CSS, scripts, shadow DOM and assistive technology require separate testing.",
+  "binding": {
+    "chain_id": 61999,
+    "contract": "0x8acED57B7f0875A67D5A4CC56De48105949d7405",
+    "source_sha256": "a97d1934297108628e792fb7396c0108339e623e5158b40020348cd2d0237db8",
+    "bounty_id": 0,
+    "baseline_hash": "129d807e74f4d3f9682ec23b511ddf7c037b959c7b6d558f42c5248cf6462430",
+    "barrier": "The newsletter signup email input has no meaningful accessible name.",
+    "criteria": "Preserve newsletter signup and give the email input a meaningful Email address accessible name supported by source HTML. Do not claim runtime keyboard or screen reader certification.",
+    "repair_url": "https://raw.githubusercontent.com/haris4587/AccessPatch/main/public/fixtures/recovery-page.html",
+    "deadline": 1791613875
+  },
+  "page_hash": "fb587f937b647c93ea74a070e273a9328a073f5660f9a2bd63655dde01e6b3c5",
+  "notes": "Synthetic recorded email-label repair; generated anew by milestone v2. No runtime claims.",
+  "analysis": {
+    "before": {
+      "checks": [
+        {
+          "key": "control-label:id:email",
+          "rule": "control-label",
+          "tag": "input",
+          "id": "email",
+          "line": 1,
+          "result": "needs_review",
+          "detail": "No supported explicit name declaration. Placeholder/title are not accepted by this limited check."
+        },
+        {
+          "key": "document-language:html:0",
+          "rule": "document-language",
+          "tag": "html",
+          "id": null,
+          "line": 1,
+          "result": "present",
+          "detail": "Language tag declared"
+        },
+        {
+          "key": "document-title:title:3",
+          "rule": "document-title",
+          "tag": "title",
+          "id": null,
+          "line": 1,
+          "result": "present",
+          "detail": "Title text declared"
+        }
+      ],
+      "counts": {
+        "elements": 12,
+        "controls": 1,
+        "untracked_controls": 0,
+        "needs_review": 1
+      },
+      "tracked_controls": [
+        {
+          "id": "email",
+          "tag": "input",
+          "type": "email"
+        }
+      ],
+      "runtime_content": false
+    },
+    "after": {
+      "checks": [
+        {
+          "key": "control-label:id:email",
+          "rule": "control-label",
+          "tag": "input",
+          "id": "email",
+          "line": 1,
+          "result": "present",
+          "detail": "label for/id: Email address"
+        },
+        {
+          "key": "document-language:html:0",
+          "rule": "document-language",
+          "tag": "html",
+          "id": null,
+          "line": 1,
+          "result": "present",
+          "detail": "Language tag declared"
+        },
+        {
+          "key": "document-title:title:3",
+          "rule": "document-title",
+          "tag": "title",
+          "id": null,
+          "line": 1,
+          "result": "present",
+          "detail": "Title text declared"
+        }
+      ],
+      "counts": {
+        "elements": 13,
+        "controls": 1,
+        "untracked_controls": 0,
+        "needs_review": 0
+      },
+      "tracked_controls": [
+        {
+          "id": "email",
+          "tag": "input",
+          "type": "email"
+        }
+      ],
+      "runtime_content": false
+    },
+    "fixed": [
+      "control-label:id:email"
+    ],
+    "new_findings": [],
+    "removed_controls": [],
+    "changed_controls": [],
+    "summary": "DECLARED_SOURCE_CHECKS_CLEAR"
+  }
+}

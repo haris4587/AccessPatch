@@ -6,11 +6,13 @@
   "scripts": {
     "dev": "vite --host 0.0.0.0",
     "build": "vite build",
-    "test": "python3 -m unittest discover -s tests -v && npm run test:audit",
-    "test:audit": "node --test tests/audit.test.mjs"
+    "test": "python3 -m unittest discover -s tests -v && npm run test:audit && npm run test:prepare",
+    "test:audit": "node --test tests/audit.test.mjs",
+    "test:prepare": "node --test tests/prepare.test.mjs tests/studio-ui.test.mjs"
   },
   "dependencies": {
     "genlayer-js": "1.1.8",
+    "parse5": "8.0.0",
     "vite": "6.3.5"
   }
 }

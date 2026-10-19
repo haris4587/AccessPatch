@@ -93,3 +93,21 @@ See [milestone delta and reviewer instructions](docs/milestone-v1.md), [new audi
 node scripts/audit-bundle.mjs verify public/audit-example.json
 node scripts/audit-bundle.mjs verify public/audit-example.json --online
 ```
+
+## Milestone v2: bounty-bound Repair Evidence Studio
+
+New beyond the accepted v1 audit workbench: prepare the evidence *before* committing it. Open **Prepare repair** on the public site or **Prepare repair evidence** in a bounty. Load the pinned baseline and locked criteria, upload/paste repaired HTML, inspect source findings and control continuity, then download an exact report, repaired HTML, and reproducible preparation JSON. Importing recomputes all findings and digests. Authenticate the context against finalized GenLayer state; for an open bounty the app can fill the existing commit/reveal form without sending a transaction.
+
+The new shared `src/prepare.js` engine uses parse5 8.0.0 rather than regex or executable DOM. It checks declared form-control labels, image-alt attribute presence, duplicate IDs, document title and language, and tracks removed/type-changed controls by unique ID. These are intentionally bounded source checks, not computed accessible names, runtime tests, WCAG certification, or an automatic GenLayer verdict. The original contract remains responsible for the semantic decision.
+
+See [v2 delta and reviewer path](docs/milestone-v2.md), [preparation security and scope](docs/preparation-security.md), [new live context proof](docs/milestone-v2-verification.json), and [reproducible generated report](docs/milestone-v2-report.txt). `npm test` now runs 122 tests: 62 accepted-baseline tests and 60 new preparation/event-flow tests. Event-flow tests use a DOM double; browser visual QA was unavailable.
+
+```sh
+# Read-only/local: generate from a v1 audit package. NEW_OUTPUT_JSON must not exist.
+node scripts/prepare-repair.mjs create public/audit-example.json public/fixtures/after.html /tmp/accesspatch-preparation-v2.json
+node scripts/prepare-repair.mjs verify /tmp/accesspatch-preparation-v2.json
+node scripts/prepare-repair.mjs verify /tmp/accesspatch-preparation-v2.json --online
+node scripts/verify-milestone-v2.mjs
+```
+
+To use a report for a new bounty: commit privately before publication, keep the same browser session/salt, publish exact downloaded files at the locked repair URL and chosen report URL, then reveal from the same account after the 60-second minimum. The paid recorded example is read-only and cannot accept a new commitment. V2 introduces no new contract deployment or new payout; the live proof authenticates an existing synthetic Studionet bounty.

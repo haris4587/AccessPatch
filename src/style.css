@@ -35,3 +35,5 @@ nav a:hover{color:#9ec6ff}
 #notice:empty{background:none}
 @media(prefers-reduced-motion:reduce){.siteBackdrop{transform:none!important;will-change:auto}.siteBackdrop::after{animation:none}}
 @media(max-width:850px){.siteBackdrop{background-position:38% center}.scope{padding:24px 20px}}
+
+.prepare{align-items:start}.prepare summary{font-weight:600;cursor:pointer;margin:16px 0}.sourceEditor{width:100%;min-height:180px;font:12px/1.6 monospace;resize:vertical;white-space:pre;overflow:auto;color:#172440;background:#fff;border:1px solid #afbed7;border-radius:6px;padding:12px}.prepare button{margin:0 6px 10px 0}.prepDownloads{display:flex;flex-wrap:wrap;margin-top:16px}.prepare>div{min-width:0}.prepare .small{line-height:1.6}header nav{flex-wrap:wrap;row-gap:12px}

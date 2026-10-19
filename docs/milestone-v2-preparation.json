@@ -1,0 +1,120 @@
+{
+  "schema": "accesspatch-preparation-v2",
+  "engine": "source-preflight-1",
+  "context": {
+    "chain_id": 61999,
+    "contract": "0x8acED57B7f0875A67D5A4CC56De48105949d7405",
+    "source_sha256": "a97d1934297108628e792fb7396c0108339e623e5158b40020348cd2d0237db8",
+    "bounty_id": 0,
+    "baseline_hash": "129d807e74f4d3f9682ec23b511ddf7c037b959c7b6d558f42c5248cf6462430",
+    "barrier": "The newsletter signup email input has no meaningful accessible name.",
+    "criteria": "Preserve newsletter signup and give the email input a meaningful Email address accessible name supported by source HTML. Do not claim runtime keyboard or screen reader certification.",
+    "repair_url": "https://raw.githubusercontent.com/haris4587/AccessPatch/main/public/fixtures/recovery-page.html",
+    "deadline": 1791613875
+  },
+  "original_html": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><title>AccessPatch synthetic before fixture</title></head><body><main><h1>Community workshop signup</h1><p>Register for the free HTML accessibility workshop.</p><form><input id=\"email\" type=\"email\" placeholder=\"Enter email\"><button type=\"submit\">Register</button></form><p>This is a synthetic AccessPatch test fixture. The email field has no programmatically associated label.</p></main></body></html>\n",
+  "repair_html": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><title>AccessPatch synthetic repaired fixture</title></head><body><main><h1>Community workshop signup</h1><p>Register for the free HTML accessibility workshop.</p><form><label for=\"email\">Email address</label><input id=\"email\" type=\"email\" placeholder=\"Enter email\" autocomplete=\"email\"><button type=\"submit\">Register</button></form><p>This is a synthetic AccessPatch test fixture. The same email field now has an explicit visible label associated by matching for and id.</p></main></body></html>\n",
+  "notes": "Synthetic recorded email-label repair; generated anew by milestone v2. No runtime claims.",
+  "analysis": {
+    "before": {
+      "checks": [
+        {
+          "key": "control-label:id:email",
+          "rule": "control-label",
+          "tag": "input",
+          "id": "email",
+          "line": 1,
+          "result": "needs_review",
+          "detail": "No supported explicit name declaration. Placeholder/title are not accepted by this limited check."
+        },
+        {
+          "key": "document-language:html:0",
+          "rule": "document-language",
+          "tag": "html",
+          "id": null,
+          "line": 1,
+          "result": "present",
+          "detail": "Language tag declared"
+        },
+        {
+          "key": "document-title:title:3",
+          "rule": "document-title",
+          "tag": "title",
+          "id": null,
+          "line": 1,
+          "result": "present",
+          "detail": "Title text declared"
+        }
+      ],
+      "counts": {
+        "elements": 12,
+        "controls": 1,
+        "untracked_controls": 0,
+        "needs_review": 1
+      },
+      "tracked_controls": [
+        {
+          "id": "email",
+          "tag": "input",
+          "type": "email"
+        }
+      ],
+      "runtime_content": false
+    },
+    "after": {
+      "checks": [
+        {
+          "key": "control-label:id:email",
+          "rule": "control-label",
+          "tag": "input",
+          "id": "email",
+          "line": 1,
+          "result": "present",
+          "detail": "label for/id: Email address"
+        },
+        {
+          "key": "document-language:html:0",
+          "rule": "document-language",
+          "tag": "html",
+          "id": null,
+          "line": 1,
+          "result": "present",
+          "detail": "Language tag declared"
+        },
+        {
+          "key": "document-title:title:3",
+          "rule": "document-title",
+          "tag": "title",
+          "id": null,
+          "line": 1,
+          "result": "present",
+          "detail": "Title text declared"
+        }
+      ],
+      "counts": {
+        "elements": 13,
+        "controls": 1,
+        "untracked_controls": 0,
+        "needs_review": 0
+      },
+      "tracked_controls": [
+        {
+          "id": "email",
+          "tag": "input",
+          "type": "email"
+        }
+      ],
+      "runtime_content": false
+    },
+    "fixed": [
+      "control-label:id:email"
+    ],
+    "new_findings": [],
+    "removed_controls": [],
+    "changed_controls": [],
+    "summary": "DECLARED_SOURCE_CHECKS_CLEAR"
+  },
+  "report": "{\n  \"format\": \"AccessPatch source repair report v2\",\n  \"engine\": \"source-preflight-1\",\n  \"scope\": \"Source HTML checks only; not a browser accessibility audit, WCAG certification, proof of runtime behavior, or GenLayer verdict. Names are declared markup, not computed accessible names. CSS, scripts, shadow DOM and assistive technology require separate testing.\",\n  \"binding\": {\n    \"chain_id\": 61999,\n    \"contract\": \"0x8acED57B7f0875A67D5A4CC56De48105949d7405\",\n    \"source_sha256\": \"a97d1934297108628e792fb7396c0108339e623e5158b40020348cd2d0237db8\",\n    \"bounty_id\": 0,\n    \"baseline_hash\": \"129d807e74f4d3f9682ec23b511ddf7c037b959c7b6d558f42c5248cf6462430\",\n    \"barrier\": \"The newsletter signup email input has no meaningful accessible name.\",\n    \"criteria\": \"Preserve newsletter signup and give the email input a meaningful Email address accessible name supported by source HTML. Do not claim runtime keyboard or screen reader certification.\",\n    \"repair_url\": \"https://raw.githubusercontent.com/haris4587/AccessPatch/main/public/fixtures/recovery-page.html\",\n    \"deadline\": 1791613875\n  },\n  \"page_hash\": \"fb587f937b647c93ea74a070e273a9328a073f5660f9a2bd63655dde01e6b3c5\",\n  \"notes\": \"Synthetic recorded email-label repair; generated anew by milestone v2. No runtime claims.\",\n  \"analysis\": {\n    \"before\": {\n      \"checks\": [\n        {\n          \"key\": \"control-label:id:email\",\n          \"rule\": \"control-label\",\n          \"tag\": \"input\",\n          \"id\": \"email\",\n          \"line\": 1,\n          \"result\": \"needs_review\",\n          \"detail\": \"No supported explicit name declaration. Placeholder/title are not accepted by this limited check.\"\n        },\n        {\n          \"key\": \"document-language:html:0\",\n          \"rule\": \"document-language\",\n          \"tag\": \"html\",\n          \"id\": null,\n          \"line\": 1,\n          \"result\": \"present\",\n          \"detail\": \"Language tag declared\"\n        },\n        {\n          \"key\": \"document-title:title:3\",\n          \"rule\": \"document-title\",\n          \"tag\": \"title\",\n          \"id\": null,\n          \"line\": 1,\n          \"result\": \"present\",\n          \"detail\": \"Title text declared\"\n        }\n      ],\n      \"counts\": {\n        \"elements\": 12,\n        \"controls\": 1,\n        \"untracked_controls\": 0,\n        \"needs_review\": 1\n      },\n      \"tracked_controls\": [\n        {\n          \"id\": \"email\",\n          \"tag\": \"input\",\n          \"type\": \"email\"\n        }\n      ],\n      \"runtime_content\": false\n    },\n    \"after\": {\n      \"checks\": [\n        {\n          \"key\": \"control-label:id:email\",\n          \"rule\": \"control-label\",\n          \"tag\": \"input\",\n          \"id\": \"email\",\n          \"line\": 1,\n          \"result\": \"present\",\n          \"detail\": \"label for/id: Email address\"\n        },\n        {\n          \"key\": \"document-language:html:0\",\n          \"rule\": \"document-language\",\n          \"tag\": \"html\",\n          \"id\": null,\n          \"line\": 1,\n          \"result\": \"present\",\n          \"detail\": \"Language tag declared\"\n        },\n        {\n          \"key\": \"document-title:title:3\",\n          \"rule\": \"document-title\",\n          \"tag\": \"title\",\n          \"id\": null,\n          \"line\": 1,\n          \"result\": \"present\",\n          \"detail\": \"Title text declared\"\n        }\n      ],\n      \"counts\": {\n        \"elements\": 13,\n        \"controls\": 1,\n        \"untracked_controls\": 0,\n        \"needs_review\": 0\n      },\n      \"tracked_controls\": [\n        {\n          \"id\": \"email\",\n          \"tag\": \"input\",\n          \"type\": \"email\"\n        }\n      ],\n      \"runtime_content\": false\n    },\n    \"fixed\": [\n      \"control-label:id:email\"\n    ],\n    \"new_findings\": [],\n    \"removed_controls\": [],\n    \"changed_controls\": [],\n    \"summary\": \"DECLARED_SOURCE_CHECKS_CLEAR\"\n  }\n}\n",
+  "page_hash": "fb587f937b647c93ea74a070e273a9328a073f5660f9a2bd63655dde01e6b3c5",
+  "report_hash": "df9f9663bd304f04023b4c6e1bed13df726d2e8ba56499769738b583a52d409d"
+}

@@ -1,0 +1,50 @@
+{
+  "milestone": "v2-repair-evidence-studio",
+  "recorded_at": "2026-10-19T10:58:18.297Z",
+  "accepted_baseline_commit": "b054ff484a241099ed04b093fbbf73327ff2c777",
+  "contract": "0x8acED57B7f0875A67D5A4CC56De48105949d7405",
+  "source_matches": true,
+  "contract_changed": false,
+  "new_contract_deployment": false,
+  "new_payout": false,
+  "read_only_verification": true,
+  "synthetic_existing_bounty": true,
+  "offline": {
+    "verified": true,
+    "mode": "offline",
+    "bounty_id": 0,
+    "summary": "DECLARED_SOURCE_CHECKS_CLEAR",
+    "page_hash": "fb587f937b647c93ea74a070e273a9328a073f5660f9a2bd63655dde01e6b3c5",
+    "report_hash": "df9f9663bd304f04023b4c6e1bed13df726d2e8ba56499769738b583a52d409d",
+    "note": "Internal consistency only. Authenticate the locked context against GenLayer before commit."
+  },
+  "online": {
+    "verified": true,
+    "mode": "online",
+    "authenticated_context": true,
+    "bounty_id": 0,
+    "status": "PAID",
+    "summary": "DECLARED_SOURCE_CHECKS_CLEAR",
+    "note": "Locked context and baseline authenticated. Repair is locally prepared; it has not been approved by GenLayer."
+  },
+  "fixed": [
+    "control-label:id:email"
+  ],
+  "removed_control_attack_rejected": true,
+  "tampered_report_rejected": true,
+  "recomputed_forged_criteria_rejected_online": true,
+  "closed_bounty_handoff_blocked": true,
+  "tests": {
+    "existing": 62,
+    "new": 60,
+    "total": 122
+  },
+  "browser_interaction_qa": "Not performed: supported control-browser skill unavailable; UI event-flow checks use a DOM double.",
+  "local_validation": {
+    "full_test_suite": "passed",
+    "production_build": "passed",
+    "cli_create_and_verify": "passed",
+    "node_version": "v24.19.0",
+    "evidence_url_rules": "contract-compatible 500-character HTTPS cap, credential/fragment and common private-host exclusions"
+  }
+}
