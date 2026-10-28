@@ -4,6 +4,7 @@ mountBackdrop();
 import {mountCursorRing} from './cursor-ring.ts';
 try { const dispose = mountCursorRing(document.querySelector('.heroRing')); if (dispose) window.addEventListener('pagehide', dispose, {once:true}); } catch { /* Decoration failure leaves all app controls usable. */ }
 import {exportBundle,verifyBundle,verifyOnline,parseBundle,MAX_BUNDLE_BYTES} from './audit.js';
+import {validateChallengeSubmission} from './challenge.js';
 import {repairCommitment,freshSalt} from './commitment.js';
 import {createClient,createAccount,generatePrivateKey} from 'genlayer-js';
 import {studionet} from 'genlayer-js/chains';
@@ -46,8 +47,8 @@ function board(){
 }
 function detail(){
  const b=selected,c=b.candidate;
- $('#detail').innerHTML=`<div class="detailHeading"><span class="small">BOUNTY #${b.id}</span><span class="badge ${b.status}">${b.status}</span></div><h2>${esc(b.title)}</h2><p class="reward">${money(b.reward_wei)} sandbox GEN</p><div class="detailBlock"><h3>Barrier</h3><p>${esc(b.barrier)}</p></div><div class="detailBlock"><h3>Acceptance criteria</h3><p>${esc(b.criteria)}</p></div><div class="detailBlock"><h3>Committed sources</h3><p>Payment and challenges use immutable evidence snapshots captured at reveal. Later URL edits cannot block an accepted reward.</p><button data-action="evidence" class="secondary">View reviewed snapshots</button><button data-action="prepare" class="secondary">Prepare repair evidence</button>${safeLink(b.baseline_url,'Original page')}${safeLink(b.repair_url,'Authorized repair page')}<p class="digest">Baseline SHA-256: ${esc(b.baseline_hash)}</p>${c?safeLink(c.report_url,'Repair evidence report')+`<p class="digest">Repair SHA-256: ${esc(c.page_hash)}<br>Report SHA-256: ${esc(c.report_hash)}</p>`:''}</div><div class="detailBlock"><h3>Timing & participants</h3><p>Submission deadline: ${when(b.deadline)}<br>Challenge period: ${b.challenge_seconds} seconds${c?'<br>Settlement after: '+when(c.settle_after):''}</p><p class="digest">Sponsor: ${esc(b.sponsor)}${c?'<br>Fixer: '+esc(c.fixer):''}</p></div><div class="actions">${['OPEN','INCONCLUSIVE'].includes(b.status)?'<button data-action="repair">Submit repair</button>':''}${b.status==='REVIEW'?'<button data-action="challenge" class="secondary">Challenge</button><button data-action="settle">Settle reward</button>':''}${b.status==='INCONCLUSIVE'?'<button data-action="retry_review">Retry review as fixer</button><button data-action="reopen_bounty" class="secondary">Reopen bounty</button>':''}${['OPEN','INCONCLUSIVE'].includes(b.status)?'<button data-action="refund" class="secondary">Refund after deadline</button>':''}</div>${b.payment?`<div class="event"><strong>${b.payment.type==='REWARD'?'Reward released':'Reward refunded'}</strong><p>${money(b.payment.amount_wei)} GEN</p><p class="digest">Recipient ${esc(b.payment.recipient)}</p></div>`:''}<div class="detailBlock"><h3>Decision history</h3>${b.history.map(h=>`<div class="event"><strong>${esc(h.action)} · ${esc(h.verdict)}</strong><p>${esc(h.reason)}</p><span class="small">${when(h.time)}</span></div>`).join('')||'<p>No repair has been judged yet.</p>'}</div>`;
- document.querySelectorAll('[data-action]').forEach(el=>el.onclick=()=>{const a=el.dataset.action;if(a==='prepare'){document.getElementById('prepId').value=b.id;document.getElementById('prepare').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});document.getElementById('prepLoad').onclick?.();}else if(a==='evidence')showEvidence(b.id);else if(a==='repair'||a==='challenge')openForm(a);else execute(a==='settle'?'settle':a,[b.id],0n);});
+ $('#detail').innerHTML=`<div class="detailHeading"><span class="small">BOUNTY #${b.id}</span><span class="badge ${b.status}">${b.status}</span></div><h2>${esc(b.title)}</h2><p class="reward">${money(b.reward_wei)} sandbox GEN</p><div class="detailBlock"><h3>Barrier</h3><p>${esc(b.barrier)}</p></div><div class="detailBlock"><h3>Acceptance criteria</h3><p>${esc(b.criteria)}</p></div><div class="detailBlock"><h3>Committed sources</h3><p>Payment and challenges use immutable evidence snapshots captured at reveal. Later URL edits cannot block an accepted reward.</p><button data-action="evidence" class="secondary">View reviewed snapshots</button><button data-action="prepare" class="secondary">Prepare repair evidence</button>${safeLink(b.baseline_url,'Original page')}${safeLink(b.repair_url,'Authorized repair page')}<p class="digest">Baseline SHA-256: ${esc(b.baseline_hash)}</p>${c?safeLink(c.report_url,'Repair evidence report')+`<p class="digest">Repair SHA-256: ${esc(c.page_hash)}<br>Report SHA-256: ${esc(c.report_hash)}</p>`:''}</div><div class="detailBlock"><h3>Timing & participants</h3><p>Submission deadline: ${when(b.deadline)}<br>Challenge period: ${b.challenge_seconds} seconds${c?'<br>Settlement after: '+when(c.settle_after):''}</p><p class="digest">Sponsor: ${esc(b.sponsor)}${c?'<br>Fixer: '+esc(c.fixer):''}</p></div><div class="actions">${['OPEN','INCONCLUSIVE'].includes(b.status)?'<button data-action="repair">Submit repair</button>':''}${b.status==='REVIEW'?'<button data-action="review-challenge" class="secondary">Review &amp; prepare challenge</button><button data-action="challenge" class="secondary">Challenge</button><button data-action="settle">Settle reward</button>':''}${b.status==='INCONCLUSIVE'?'<button data-action="retry_review">Retry review as fixer</button><button data-action="reopen_bounty" class="secondary">Reopen bounty</button>':''}${['OPEN','INCONCLUSIVE'].includes(b.status)?'<button data-action="refund" class="secondary">Refund after deadline</button>':''}</div>${b.payment?`<div class="event"><strong>${b.payment.type==='REWARD'?'Reward released':'Reward refunded'}</strong><p>${money(b.payment.amount_wei)} GEN</p><p class="digest">Recipient ${esc(b.payment.recipient)}</p></div>`:''}<div class="detailBlock"><h3>Decision history</h3>${b.history.map(h=>`<div class="event"><strong>${esc(h.action)} · ${esc(h.verdict)}</strong><p>${esc(h.reason)}</p><span class="small">${when(h.time)}</span></div>`).join('')||'<p>No repair has been judged yet.</p>'}</div>`;
+ document.querySelectorAll('[data-action]').forEach(el=>el.onclick=()=>{const a=el.dataset.action;if(a==='review-challenge'){document.getElementById('challengeId').value=b.id;document.getElementById('challenge').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});document.getElementById('challengeLoad').onclick?.();}else if(a==='prepare'){document.getElementById('prepId').value=b.id;document.getElementById('prepare').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});document.getElementById('prepLoad').onclick?.();}else if(a==='evidence')showEvidence(b.id);else if(a==='repair'||a==='challenge')openForm(a);else execute(a==='settle'?'settle':a,[b.id],0n);});
 }
 async function showEvidence(id){
  try{const evidence=JSON.parse(await client.readContract({address:deployment.contract,functionName:'get_evidence',args:[id],transactionHashVariant:TransactionHashVariant.LATEST_FINAL}));
@@ -56,10 +57,10 @@ async function showEvidence(id){
  }catch(e){say('Could not read evidence: '+e.message);}
 }
 function field(name,label,type='text',value='',help='') {return `<label class="field"><span>${esc(label)}</span>${type==='textarea'?`<textarea name="${name}" required maxlength="2000">${esc(value)}</textarea>`:`<input name="${name}" type="${type}" value="${esc(value)}" required ${type==='number'?'min="1" step="1"':''}>`}${help?`<small>${esc(help)}</small>`:''}</label>`;}
-let mode='create';
+let mode='create', pendingChallenge=null, pendingChallengeUrl='';
 function draftKey(){return 'ap-repair:'+deployment.contract.toLowerCase()+':'+account?.address.toLowerCase()+':'+selected.id;}
 function draft(){return account?JSON.parse(sessionStorage.getItem(draftKey())??'null'):null;}
-function openForm(m){$('#submit').hidden=false;mode=m;$('#formTitle').textContent={create:'Sponsor a repair',repair:'Submit repair evidence',challenge:'Challenge a repair'}[m];
+function openForm(m){pendingChallenge=null;$('#submit').hidden=false;mode=m;$('#formTitle').textContent={create:'Sponsor a repair',repair:'Submit repair evidence',challenge:'Challenge a repair'}[m];
  $('#fields').innerHTML=m==='create'?field('title','Bounty title')+field('baseline_url','Public original page URL','url')+field('repair_url','Authorized repaired page URL','url')+field('barrier','Specific accessibility barrier','textarea')+field('criteria','Acceptance criteria','textarea')+field('reward','Reward in sandbox GEN','text','0.1')+field('duration','Submission period in seconds','number','86400')+field('challenge_seconds','Challenge period in seconds','number','3600'):m==='repair'?field('report_url','Public repair report URL','url')+field('page_hash','Repaired page SHA-256')+field('report_hash','Report SHA-256'):field('evidence_url','Public counter-evidence URL','url')+field('evidence_hash','Counter-evidence SHA-256');
  if(m==='repair'){const saved=draft();if(saved)for(const name of ['report_url','page_hash','report_hash'])$('#form').elements[name].value=saved[name];}
  $('#commitRepair').hidden=m!=='repair';$('#submit').textContent=m==='repair'?'2. Reveal committed repair':'Submit transaction';
@@ -68,7 +69,12 @@ $('#new').onclick=()=>openForm('create');$('#close').onclick=()=>$('#dialog').cl
 $('#form').onsubmit=async ev=>{ev.preventDefault();const f=Object.fromEntries(new FormData(ev.target));try{let name,args,value=0n;
  if(mode==='create'){name='create_bounty';args=[f.title,f.baseline_url,f.repair_url,f.barrier,f.criteria,Number(f.duration),Number(f.challenge_seconds)];value=parseEther(f.reward);if(value<=0n)throw Error('Reward must be positive');}
  else if(mode==='repair'){const saved=draft();if(!saved || ['report_url','page_hash','report_hash'].some(k=>saved[k]!==f[k]))throw Error('Commit these exact fields first.');name='submit_repair';args=[selected.id,f.report_url,f.page_hash,f.report_hash,saved.salt];}
- else{name='challenge';args=[selected.id,f.evidence_url,f.evidence_hash];}
+ else{
+   name='challenge';
+   args=pendingChallenge
+     ? await validateChallengeSubmission(pendingChallenge,pendingChallengeUrl,f.evidence_url,f.evidence_hash,client,trustedAudit,TransactionHashVariant.LATEST_FINAL,account?.address)
+     : [selected.id,f.evidence_url,f.evidence_hash];
+ }
  if(await execute(name,args,value)){$('#dialog').close();if(mode==='repair')sessionStorage.removeItem(draftKey());}}catch(e){say(e.message);}};
 $('#commitRepair').onclick=async()=>{
  if(!$('#form').reportValidity() || busy)return;
@@ -174,4 +180,13 @@ void import('./studio-ui.js').then(({initEvidenceStudio})=>initEvidenceStudio({
   say('Prepared report hashes loaded. Commit privately first; this action has not sent a transaction.');
  }
 })).catch(()=>{document.getElementById('prepStatus').textContent='Evidence tools could not load. Reload to retry; the bounty and audit workspaces remain available.';});
+void import('./challenge-ui.js').then(({initChallengeStudio})=>initChallengeStudio({
+ client:()=>client,trusted:trustedAudit,variant:TransactionHashVariant.LATEST_FINAL,account:()=>account?.address,
+ useChallenge:async({bounty,args,prepared})=>{
+   selected=bounty;board();detail();openForm('challenge');
+   pendingChallenge=prepared;pendingChallengeUrl=args[1];
+   $('#form').elements.evidence_url.value=args[1];$('#form').elements.evidence_hash.value=args[2];
+   say('Prepared counter-evidence loaded. Review the fields and submit explicitly.');
+ }
+})).catch(()=>{document.getElementById('challengeStatus').textContent='Challenge tools could not load. Reload to retry.';});
 void refresh();

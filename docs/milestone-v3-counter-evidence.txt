@@ -1,0 +1,31 @@
+{
+  "format": "AccessPatch counter-evidence report v3",
+  "scope": "Reviewer allegations anchored to immutable reviewed snapshots. Quotes prove only what the pinned source says; they do not prove runtime behavior, a successful challenge, or a WCAG violation. Later website drift cannot revoke a snapshot-based reward. GenLayer independently judges counter-evidence.",
+  "binding": {
+    "chain_id": 61999,
+    "contract": "0x8aced57b7f0875a67d5a4cc56de48105949d7405",
+    "source_sha256": "a97d1934297108628e792fb7396c0108339e623e5158b40020348cd2d0237db8",
+    "bounty_id": 0,
+    "barrier": "The newsletter signup email input has no meaningful accessible name.",
+    "criteria": "Preserve newsletter signup and give the email input a meaningful Email address accessible name supported by source HTML. Do not claim runtime keyboard or screen reader certification.",
+    "baseline_hash": "129d807e74f4d3f9682ec23b511ddf7c037b959c7b6d558f42c5248cf6462430",
+    "candidate": {
+      "fixer": "0x1f8f31cd3ed7e1911e045409abc034227634a680",
+      "commitment_hash": "b9025711d6b9e9e56d25d73f5946c2acdf508d984155eb0605e5262a81749cec",
+      "page_hash": "fb587f937b647c93ea74a070e273a9328a073f5660f9a2bd63655dde01e6b3c5",
+      "report_hash": "5ef87e1f74e73b1d31922f96474ee6713f07c525c9b285b64c0ba379d3e15024",
+      "settle_after": 1791528353
+    }
+  },
+  "citations": [
+    {
+      "source": "report",
+      "quote": "AccessPatch synthetic repair evidence\nBarrier: the workshop signup email input had only a placeholde",
+      "explanation": "Synthetic reviewer-tool demonstration only. This quote does not establish a defect. The bounty is already paid and cannot be challenged.",
+      "first_offset_utf16": 0,
+      "first_line": 1,
+      "occurrences": 1,
+      "snapshot_sha256": "5ef87e1f74e73b1d31922f96474ee6713f07c525c9b285b64c0ba379d3e15024"
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "milestone": "v3-challenge-review-studio",
+  "recorded_at": "2026-10-28T14:22:35.181Z",
+  "baseline_commit": "eb754fec5fd6cbfc3bfe917c0fa716241196d389",
+  "contract": "0x8acED57B7f0875A67D5A4CC56De48105949d7405",
+  "contract_source_matches": true,
+  "contract_changed": false,
+  "new_contract_deployment": false,
+  "new_challenge_transaction": false,
+  "new_payout": false,
+  "read_only": true,
+  "existing_synthetic_bounty": true,
+  "offline": {
+    "mode": "offline",
+    "internally_consistent": true,
+    "bounty_id": 0,
+    "citations": 1,
+    "evidence_hash": "63d72a1885908917f9c9efa309b1682f7f78836fc0a8f3a601677f33c7af3988",
+    "note": "Offline consistency only. Authenticate against current GenLayer state before using the challenge form."
+  },
+  "online": {
+    "mode": "online",
+    "authenticated_state": true,
+    "bounty_id": 0,
+    "status": "PAID",
+    "evidence_hash": "63d72a1885908917f9c9efa309b1682f7f78836fc0a8f3a601677f33c7af3988",
+    "note": "Candidate and reviewed snapshots authenticated. Reviewer claims have not been accepted by GenLayer."
+  },
+  "tampered_report_rejected": true,
+  "recomputed_forged_criteria_rejected_online": true,
+  "paid_bounty_challenge_blocked": true
+}

@@ -1,4 +1,5 @@
 import {abi} from 'genlayer-js';
+import {sha256 as hashBytes} from 'viem';
 // Shared browser/Node verifier. Imported bundles are untrusted data, never executable HTML.
 export const BUNDLE_SCHEMA = 'accesspatch-audit-v1';
 export const MAX_BUNDLE_BYTES = 500000;
@@ -9,6 +10,8 @@ const encoder = new TextEncoder();
 const fail = message => { throw new Error(message); };
 export async function sha256(text) {
   if (typeof text !== 'string') fail('Expected UTF-8 text');
+  // HTTP development previews lack SubtleCrypto. Use the SDK's audited byte hash there.
+  if (!globalThis.crypto?.subtle) return hashBytes(encoder.encode(text)).slice(2);
   const bytes = await crypto.subtle.digest('SHA-256', encoder.encode(text));
   return [...new Uint8Array(bytes)].map(x => x.toString(16).padStart(2, '0')).join('');
 }

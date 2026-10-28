@@ -1,5 +1,10 @@
 # AccessPatch
 
+## Portal milestone v3: Challenge Review Studio
+
+New reviewer tools prepare candidate-bound counter-evidence from exact pinned snapshots, replay portable citation packages, and recheck challenge eligibility before form handoff and submission. The deployed contract remains unchanged. [Feature, evidence and submission notes](docs/milestone-v3.md). Existing website publication is pending restoration of hosting access; source and local preview contain the new feature.
+
+
 Accessibility repair bounties powered by a real GenLayer Intelligent Contract.
 
 A sponsor commits a specific barrier, its acceptance criteria, an original page, an authorized repaired-page URL, a deadline, a challenge window, and a funded sandbox GEN reward. A fixer submits a public report and exact repair/report SHA-256 digests. GenLayer independently fetches the evidence and judges whether the barrier is meaningfully resolved. Deterministic code controls escrow, deadlines, bounded challenges, retry limits, payouts, and refunds.

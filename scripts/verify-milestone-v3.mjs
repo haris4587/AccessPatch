@@ -1,0 +1,26 @@
+// Read-only proof against the unchanged published deployment. No new challenge/payout claimed.
+import fs from 'node:fs/promises';
+import assert from 'node:assert/strict';
+import {createClient} from 'genlayer-js';
+import {studionet} from 'genlayer-js/chains';
+import {TransactionHashVariant} from 'genlayer-js/types';
+import {exportBundle} from '../src/audit.js';
+import {prepareChallenge,verifyChallenge,authenticateChallenge,assertCanChallenge} from '../src/challenge.js';
+const d=JSON.parse(await fs.readFile('public/deployment.json','utf8'));
+const trusted={chain_id:d.chain_id,contract:d.contract,source_sha256:d.source_sha256};
+const client=createClient({chain:studionet}),variant=TransactionHashVariant.LATEST_FINAL;
+const audit=await exportBundle(client,trusted,0,variant);
+assert.equal(await client.getContractCode(d.contract),await fs.readFile('contracts/access_patch.py','utf8'));
+const allegations=[{source:'report',quote:audit.evidence.report.slice(0,100),explanation:'Synthetic reviewer-tool demonstration only. This quote does not establish a defect. The bounty is already paid and cannot be challenged.'}];
+const p=await prepareChallenge(audit,allegations,trusted);
+const offline=await verifyChallenge(p,trusted),online=await authenticateChallenge(p,client,trusted,variant);
+const tampered=structuredClone(p);tampered.report+='forged';await assert.rejects(()=>verifyChallenge(tampered,trusted));
+const forgedAudit=structuredClone(audit);forgedAudit.bounty.criteria='Forged uncommitted criteria';
+const forged=await prepareChallenge(forgedAudit,allegations,trusted);
+await assert.rejects(()=>authenticateChallenge(forged,client,trusted,variant),/differs/);
+assert.throws(()=>assertCanChallenge(p,audit.bounty,'0x'+'1'.repeat(40)),/active REVIEW/);
+await fs.writeFile('docs/milestone-v3-challenge.json',JSON.stringify(p,null,2)+'\n');
+await fs.writeFile('docs/milestone-v3-counter-evidence.txt',p.report);
+await fs.writeFile('docs/milestone-v3-citations.json',JSON.stringify(allegations,null,2)+'\n');
+const result={milestone:'v3-challenge-review-studio',recorded_at:new Date().toISOString(),baseline_commit:'eb754fec5fd6cbfc3bfe917c0fa716241196d389',contract:d.contract,contract_source_matches:true,contract_changed:false,new_contract_deployment:false,new_challenge_transaction:false,new_payout:false,read_only:true,existing_synthetic_bounty:true,offline,online,tampered_report_rejected:true,recomputed_forged_criteria_rejected_online:true,paid_bounty_challenge_blocked:true};
+await fs.writeFile('docs/milestone-v3-verification.json',JSON.stringify(result,null,2)+'\n');console.log(JSON.stringify(result,null,2));
